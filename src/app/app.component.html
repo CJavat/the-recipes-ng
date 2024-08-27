@@ -1,3 +1,8 @@
-<h1 class="text-5xl text-red-500 font-bold">Hola Mundo</h1>
+<div
+  *ngIf="!finishedAuthCheck()"
+  class="w-screen h-screen flex justify-center items-center bg-sky-50 dark:bg-sky-950"
+>
+  <img src="../assets/spinner.svg" alt="" class="w-32" />
+</div>
 
-<router-outlet />
+<router-outlet *ngIf="finishedAuthCheck()" />
