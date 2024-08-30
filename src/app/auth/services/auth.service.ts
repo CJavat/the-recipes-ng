@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import {
   AuthStatus,
   CheckToken,
+  ForgotPasswordResponse,
   RegisterUser,
   RegisterUserResponse,
   User,
@@ -72,6 +73,24 @@ export class AuthService {
 
     return this.http.post(url, body).pipe(
       map((user) => this.setAuthentication(user as User)),
+      catchError((err) => throwError(() => err.error.message))
+    );
+  }
+
+  forgotPassword(email: string): Observable<ForgotPasswordResponse> {
+    const url = `${this.baseUrl}/auth/forgot-password`;
+
+    return this.http.post(url, { email }).pipe(
+      map((msg) => msg as ForgotPasswordResponse),
+      catchError((err) => throwError(() => err.error.message))
+    );
+  }
+
+  updateForgotPassword(token: string, password: string) {
+    const url = `${this.baseUrl}/auth/forgot-password/${token}`;
+
+    return this.http.post(url, { password }).pipe(
+      map((msg) => msg as ForgotPasswordResponse),
       catchError((err) => throwError(() => err.error.message))
     );
   }

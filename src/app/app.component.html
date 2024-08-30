@@ -2,7 +2,7 @@
   *ngIf="!finishedAuthCheck()"
   class="w-screen h-screen flex justify-center items-center bg-sky-50 dark:bg-sky-950"
 >
-  <img src="../assets/spinner.svg" alt="" class="w-32" />
+  <img src="../assets/spinner.svg" alt="loading..." class="w-32" />
 </div>
 
 <router-outlet *ngIf="finishedAuthCheck()" />

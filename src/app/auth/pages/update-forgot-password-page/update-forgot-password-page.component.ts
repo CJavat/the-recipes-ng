@@ -7,11 +7,11 @@ import { AuthService } from '../../services/auth.service';
 import { ValidatorsService } from '../../../shared/services/validators.service';
 
 @Component({
-  selector: 'auth-forgot-password-page',
-  templateUrl: './forgot-password-page.component.html',
+  selector: 'auth-update-forgot-password-page',
+  templateUrl: './update-forgot-password-page.component.html',
   styles: ``,
 })
-export class ForgotPasswordPageComponent {
+export class UpdateForgotPasswordPageComponent {
   private router = inject(Router);
   public myForm: FormGroup;
 
@@ -26,15 +26,20 @@ export class ForgotPasswordPageComponent {
     private validatorsService: ValidatorsService,
     private authService: AuthService
   ) {
-    this.myForm = this.formBuilder.group({
-      email: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(this.validatorsService.emailPattern),
+    this.myForm = this.formBuilder.group(
+      {
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        rePassword: ['', Validators.required],
+      },
+      {
+        validators: [
+          this.validatorsService.isFieldOneEqualFieldTWo(
+            'password',
+            'rePassword'
+          ),
         ],
-      ],
-    });
+      }
+    );
   }
 
   isValidField(field: string) {
@@ -45,9 +50,10 @@ export class ForgotPasswordPageComponent {
     this.myForm.markAllAsTouched();
     this.isLoading.set(true);
 
-    const { email } = this.myForm.value;
+    const { password, rePassword } = this.myForm.value;
+    const token = this.router.url.split('/').at(-1) ?? '';
 
-    this.authService.forgotPassword(email).subscribe({
+    this.authService.updateForgotPassword(token, password).subscribe({
       next: ({ ok, message }) =>
         Swal.fire('Error', message ?? '', 'success').then(() =>
           this.router.navigateByUrl('/auth/login')

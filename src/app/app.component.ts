@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
         break;
 
       case AuthStatus.notAuthenticated:
-        this.router.navigateByUrl('/auth/login');
+        // this.router.navigateByUrl('/auth');
         break;
     }
   });
