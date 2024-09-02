@@ -6,9 +6,10 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 
 import { SharedModule } from '../shared/shared.module';
 import { SearchComponentComponent } from './components/search-component/search-component.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
-  declarations: [DashboardLayoutComponent, SearchComponentComponent],
+  declarations: [DashboardLayoutComponent, SearchComponentComponent, NavbarComponent],
   imports: [CommonModule, DashboardRoutingModule, SharedModule],
 })
 export class DashboardModule {}
