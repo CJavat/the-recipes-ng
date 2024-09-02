@@ -55,7 +55,7 @@ export class UpdateForgotPasswordPageComponent {
 
     this.authService.updateForgotPassword(token, password).subscribe({
       next: ({ ok, message }) =>
-        Swal.fire('Error', message ?? '', 'success').then(() =>
+        Swal.fire('Contraseña Actualizada', message ?? '', 'success').then(() =>
           this.router.navigateByUrl('/auth/login')
         ),
       error: (message) => {

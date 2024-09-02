@@ -74,7 +74,8 @@ export class RegisterPageComponent {
         this.router.navigateByUrl('/auth/login');
       },
       error: (message) => {
-        Swal.fire('Error', message, 'error');
+        console.log(message);
+        Swal.fire('Error', message[0], 'error');
       },
     });
   }

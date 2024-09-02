@@ -1,18 +1,21 @@
-<nav class="w-full absolute top-0 flex justify-around items-center">
+<nav class="w-full absolute top-0 flex justify-center items-center md:gap-5">
   <img
-    class="h-28 w-auto rounded-2xl"
+    class="h-14 w-auto rounded-2xl"
     src="/android-chrome-512x512.png"
     alt="The Recipes Logo"
   />
 
   <!-- Buscador -->
+  <dashboard-search-component />
 
+  <!-- Menu de hamburguesa -->
   <ul>
     <!-- OPCIONES -->
     <li></li>
+    <li>
+      <shared-theme class="pr-5" />
+    </li>
   </ul>
-
-  <shared-theme class="pr-5" />
 </nav>
 
 <main

@@ -49,9 +49,11 @@ export class ForgotPasswordPageComponent {
 
     this.authService.forgotPassword(email).subscribe({
       next: ({ ok, message }) =>
-        Swal.fire('Error', message ?? '', 'success').then(() =>
-          this.router.navigateByUrl('/auth/login')
-        ),
+        Swal.fire(
+          'Recuperación de contraseña en proceso',
+          message ?? '',
+          'success'
+        ).then(() => this.router.navigateByUrl('/auth/login')),
       error: (message) => {
         console.log(message);
         Swal.fire('Error', message[0], 'error');
