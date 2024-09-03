@@ -1,6 +1,6 @@
 <!-- This is an example component -->
-<div class="max-w-2xl mx-auto md:w-96">
-  <form class="flex items-center">
+<div class="max-w-2xl mx-auto xl:w-96 w-auto">
+  <form class="flex items-center" (submit)="onSubmit($event, txtInput.value)">
     <label for="simple-search" class="sr-only">Search</label>
     <div class="relative w-full">
       <div
@@ -26,6 +26,7 @@
         class="bg-transparent border border-sky-900 text-gray-900 dark:text-white text-sm rounded-lg block w-full pl-10 p-2.5"
         placeholder="Buscar recetas"
         required
+        #txtInput
       />
     </div>
   </form>

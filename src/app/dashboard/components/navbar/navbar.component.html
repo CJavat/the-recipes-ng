@@ -1,5 +1,5 @@
 <nav
-  class="fixed w-full top-0 right-0 bg-sky-50 dark:bg-sky-950 border-b border-b-sky-200 dark:border-b-sky-900"
+  class="sticky w-full top-0 right-0 bg-sky-50 dark:bg-sky-950 border-b border-b-sky-200 dark:border-b-sky-900"
 >
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
     <div class="relative flex h-16 items-center justify-between">
@@ -59,31 +59,16 @@
 
         <div class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">
+            @for (route of recipesRoutes; track $index) {
             <a
-              routerLink="/"
+              [routerLink]="route.routerLink"
               routerLinkActive="bg-sky-500 text-white"
+              [routerLinkActiveOptions]="{ exact: true }"
               class="rounded-md px-3 py-2 text-sm font-medium text-black dark:text-white hover:bg-sky-700 hover:text-white"
               aria-current="page"
-              >Recetas</a
+              >{{ route.label }}</a
             >
-            <a
-              routerLink="#"
-              routerLinkActive="bg-gray-900"
-              class="rounded-md px-3 py-2 text-sm font-medium text-black dark:text-white hover:bg-sky-700 hover:text-white"
-              >Team</a
-            >
-            <a
-              routerLink="#"
-              routerLinkActive="bg-gray-900"
-              class="rounded-md px-3 py-2 text-sm font-medium text-black dark:text-white hover:bg-sky-700 hover:text-white"
-              >Projects</a
-            >
-            <a
-              routerLink="#"
-              routerLinkActive="bg-gray-900"
-              class="rounded-md px-3 py-2 text-sm font-medium text-black dark:text-white hover:bg-sky-700 hover:text-white"
-              >Calendar</a
-            >
+            }
           </div>
         </div>
       </div>
@@ -112,8 +97,8 @@
               <span class="sr-only">Open user menu</span>
               <img
                 class="h-8 w-8 rounded-full"
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                alt=""
+                [src]="imageUser?.src"
+                [alt]="imageUser?.alt"
               />
             </button>
           </div>
@@ -129,31 +114,27 @@
               'opacity-100 max-h-screen': isExpandedProfile,
             }"
           >
-            <!-- Active: "bg-gray-100", Not Active: "" -->
+            @for (route of accountRoutes; track $index) {
             <a
-              href="#"
+              [routerLink]="route.routerLink"
+              routerLinkActive="bg-sky-500 text-white"
               class="block px-4 py-2 text-sm hover:bg-sky-200 dark:hover:bg-sky-900"
               role="menuitem"
               tabindex="-1"
               id="user-menu-item-0"
-              >Mi Perfil</a
+              >{{ route.label }}</a
             >
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm hover:bg-sky-200 dark:hover:bg-sky-900"
-              role="menuitem"
-              tabindex="-1"
-              id="user-menu-item-0"
-              >Recetas Favoritas</a
-            >
-            <a
-              href="#"
+            }
+
+            <button
               class="block px-4 py-2 text-sm font-bold text-red-500 hover:bg-sky-200 dark:hover:bg-sky-900"
               role="menuitem"
               tabindex="-1"
               id="user-menu-item-2"
-              >Cerrar Sesión</a
+              (click)="OnLogout()"
             >
+              Cerrar Sesión
+            </button>
           </div>
         </div>
       </div>
@@ -170,31 +151,16 @@
     id="mobile-menu"
   >
     <div class="space-y-1 px-2 pb-3 pt-2">
+      @for (route of recipesRoutes; track $index) {
       <a
-        routerLink="/"
-        routerLinkActive="bg-sky-500"
-        class="block rounded-md px-3 py-2 text-base font-medium text-black dark:text-white hover:bg-sky-700 hover:text-white"
+        [routerLink]="route.routerLink"
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLinkActive="bg-sky-500 text-white"
+        class="block rounded-md px-3 py-2 text-sm font-medium text-black dark:text-white hover:bg-sky-700 hover:text-white"
         aria-current="page"
-        >Dashboard</a
+        >{{ route.label }}</a
       >
-      <a
-        routerLink="#"
-        routerLinkActive="bg-gray-900"
-        class="block rounded-md px-3 py-2 text-base font-medium text-black dark:text-white hover:bg-sky-700 hover:text-white"
-        >Team</a
-      >
-      <a
-        routerLink="#"
-        routerLinkActive="bg-gray-900"
-        class="block rounded-md px-3 py-2 text-base font-medium text-black dark:text-white hover:bg-sky-700 hover:text-white"
-        >Projects</a
-      >
-      <a
-        routerLink="#"
-        routerLinkActive="bg-gray-900"
-        class="block rounded-md px-3 py-2 text-base font-medium text-black dark:text-white hover:bg-sky-700 hover:text-white"
-        >Calendar</a
-      >
+      }
     </div>
     <!-- Sun/Moon Theme  -->
     <shared-theme class="block mt-7 px-3" />

@@ -10,6 +10,7 @@ import {
   User,
 } from '../interfaces';
 import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
+import { DashboardService } from '../../dashboard/services/dashboard.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,7 @@ export class AuthService {
   curretUser = computed(() => this._currentUser());
   authStatus = computed(() => this._authStatus());
 
-  constructor() {
+  constructor(private readonly dashboardService: DashboardService) {
     this.checkAuthStatus().subscribe();
   }
 

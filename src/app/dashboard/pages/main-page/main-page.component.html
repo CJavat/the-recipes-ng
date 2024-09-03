@@ -1,0 +1,34 @@
+<div class="min-h-screen pt-5 px-5 flex flex-col">
+  <h3 class="text-2xl text-black dark:text-white ml-5 mb-3">Categorías</h3>
+  <div class="text-xs grid grid-cols-3 sm:grid-cols-3 xl:grid-cols-5 gap-3">
+    @for (category of categories; track $index) {
+    <a
+      [routerLink]="['category', category.name]"
+      class="bg-sky-200 hover:bg-sky-300 px-5 py-2 rounded-full text-center"
+    >
+      {{ category.name }}
+    </a>
+    }
+  </div>
+
+  <dashboard-add-recipe-button class="block my-5 self-center cursor-pointer" />
+
+  <div class="flex-1 w-full mx-5">
+    <h3 class="text-2xl text-black dark:text-white mb-3">Recetas</h3>
+
+    @if(recipes && recipes!.length > 0) {
+
+    <div class="grid gap-5 grid-cols-1 md:grid-cols-3 xl:grid-cols-4">
+      @for (recipe of recipes; track $index) {
+
+      <dashboard-recipe-card [recipe]="recipe" />
+
+      }
+    </div>
+    } @else {
+    <p class="border border-red-500 text-red-500 rounded-md text-center p-2">
+      No hay recetas para mostrar
+    </p>
+    }
+  </div>
+</div>
