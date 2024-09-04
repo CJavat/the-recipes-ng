@@ -22,6 +22,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { SharedModule } from '../shared/shared.module';
 import { RecipeCardComponent } from './components/recipe-card/recipe-card.component';
 import { RecipePageComponent } from './pages/recipe-page/recipe-page.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { RecipePageComponent } from './pages/recipe-page/recipe-page.component';
     RecipeCardComponent,
     CategoryPageComponent,
     RecipePageComponent,
+    FooterComponent,
   ],
   imports: [CommonModule, DashboardRoutingModule, SharedModule],
 })

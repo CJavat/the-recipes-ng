@@ -1,20 +1,47 @@
-import { Component, Input } from '@angular/core';
-import { RecipesResponse } from '../../interfaces';
+import { Component, Input, OnInit } from '@angular/core';
+import { RecipeWithFavorites } from '../../interfaces';
 import { environment } from '../../../../environments/environment';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'dashboard-recipe-card',
   templateUrl: './recipe-card.component.html',
-  styles: ``,
 })
 export class RecipeCardComponent {
   public backendUrl: string = environment.backendUrl;
 
   @Input({ required: true })
-  public recipe?: RecipesResponse;
+  public recipe?: RecipeWithFavorites;
 
-  constructor() {
+  constructor(private dashboardService: DashboardService) {
     if (!this.recipe) return;
     this.recipe!.image = `${this.backendUrl}/${this.recipe?.image}`;
+  }
+
+  toggleSubmit() {
+    if (!this.recipe) return;
+    this.recipe.isFavorite = !this.recipe.isFavorite;
+
+    this.recipe.isFavorite
+      ? this.addFavorite(this.recipe.id)
+      : this.removeFavorite(this.recipe.id);
+  }
+
+  private addFavorite(id: string) {
+    if (!id) return;
+
+    this.dashboardService.setFavorites(id).subscribe({
+      next: (response) => response,
+      error: (error) => console.error('Error:', error),
+    });
+  }
+
+  private removeFavorite(id: string) {
+    if (!id) return;
+
+    this.dashboardService.removeFavorites(id).subscribe({
+      next: (response) => response,
+      error: (error) => console.error('Error:', error),
+    });
   }
 }

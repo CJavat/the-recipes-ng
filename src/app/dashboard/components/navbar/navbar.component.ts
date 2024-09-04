@@ -19,7 +19,6 @@ export class NavbarComponent {
     { label: 'Recetas', routerLink: 'recipes' },
     { label: 'Categorias', routerLink: 'categories' },
     { label: 'Recetas Favoritas', routerLink: 'favorites' },
-    { label: 'Crear Receta', routerLink: 'new-recipe' },
   ];
   public accountRoutes: Routes[] = [
     { label: 'Mi Cuenta', routerLink: 'auth/my-account' },

@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoriesResponse, RecipesResponse } from '../../interfaces';
+import {
+  CategoriesResponse,
+  GetFavoritesResponse,
+  RecipesResponse,
+} from '../../interfaces';
 import { DashboardService } from '../../services/dashboard.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-main-page',
@@ -10,6 +15,7 @@ import { DashboardService } from '../../services/dashboard.service';
 export class MainPageComponent implements OnInit {
   public recipes?: RecipesResponse[];
   public categories?: CategoriesResponse[];
+  public favoriteRecipes?: GetFavoritesResponse[];
 
   constructor(private dashboardService: DashboardService) {}
 
@@ -19,8 +25,18 @@ export class MainPageComponent implements OnInit {
   }
 
   getRecipes() {
-    this.dashboardService.getAllRecipes().subscribe({
-      next: (recipes) => (this.recipes = recipes),
+    forkJoin({
+      recipes: this.dashboardService.getAllRecipes(),
+      favorites: this.dashboardService.getFavorites(),
+    }).subscribe({
+      next: ({ recipes, favorites }) => {
+        this.recipes = recipes.map((recipe) => {
+          return {
+            ...recipe,
+            isFavorite: favorites.some((fav) => fav.recipeId === recipe.id),
+          };
+        });
+      },
       error: (error) => console.error('Error:', error),
     });
   }
