@@ -1,5 +1,5 @@
 <nav
-  class="sticky w-full top-0 right-0 bg-sky-50 dark:bg-sky-950 border-b border-b-sky-200 dark:border-b-sky-900"
+  class="sticky w-full top-0 right-0 bg-sky-50 dark:bg-sky-950 border-b border-b-sky-200 dark:border-b-sky-900 z-50"
 >
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
     <div class="relative flex h-16 items-center justify-between">
@@ -116,6 +116,7 @@
           >
             @for (route of accountRoutes; track $index) {
             <a
+              (click)="toggleNavMenu('user-menu-button')"
               [routerLink]="route.routerLink"
               routerLinkActive="bg-sky-500 text-white"
               class="block px-4 py-2 text-sm hover:bg-sky-200 dark:hover:bg-sky-900"
@@ -155,6 +156,7 @@
       <a
         [routerLink]="route.routerLink"
         [routerLinkActiveOptions]="{ exact: true }"
+        (click)="toggleNavMenu()"
         routerLinkActive="bg-sky-500 text-white"
         class="block rounded-md px-3 py-2 text-sm font-medium text-black dark:text-white hover:bg-sky-700 hover:text-white"
         aria-current="page"

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
-import { GetFavoritesResponse } from '../../interfaces';
+import { FavoritesResponse } from '../../interfaces';
 
 @Component({
   selector: 'app-recipe-page',
@@ -15,9 +15,9 @@ export class RecipePageComponent implements OnInit {
   constructor(private dashboardService: DashboardService) {}
   ngOnInit(): void {
     const recipeId = this.router.url.split('/').at(-1) ?? '';
-    this.isFavorite = this.dashboardService
-      .curretFavorites()
-      .some((fav: GetFavoritesResponse) => fav.recipeId === recipeId);
+    // this.isFavorite = this.dashboardService
+    //   .curretFavorites()
+    //   .some((fav: FavoritesResponse) => fav.recipeId === recipeId);
 
     //TODO: Aquí me quedé
     console.log(this.isFavorite);

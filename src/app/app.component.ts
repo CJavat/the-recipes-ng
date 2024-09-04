@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { AuthService } from './auth/services/auth.service';
-import { Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { AuthStatus } from './auth/interfaces';
 
 @Component({
@@ -10,8 +10,16 @@ import { AuthStatus } from './auth/interfaces';
 export class AppComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private destinationUrl: string = '';
 
   ngOnInit(): void {
+    this.router.events.subscribe((event) => {
+      //? Obtener la ruta a donde quiere navegar
+      if (event instanceof NavigationStart) {
+        this.destinationUrl = event.url;
+      }
+    });
+
     if (
       localStorage.getItem('theme') !== 'dark' ||
       !localStorage.getItem('theme')
@@ -34,11 +42,11 @@ export class AppComponent implements OnInit {
         return;
 
       case AuthStatus.authenticated:
-        // this.router.navigateByUrl('/dashboard');
+        this.router.navigateByUrl(this.destinationUrl);
         break;
 
       case AuthStatus.notAuthenticated:
-        // this.router.navigateByUrl('/auth');
+        this.router.navigateByUrl(this.destinationUrl);
         break;
     }
   });

@@ -20,3 +20,5 @@ export class SearchPageComponent implements OnInit {
     console.log({ param: this.searchQuery });
   }
 }
+
+//TODO: Agregar paginación

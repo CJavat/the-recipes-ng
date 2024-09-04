@@ -1,12 +1,15 @@
 <div class="relative">
-  <a [routerLink]="['recipe', recipe!.id]" class="flex md:flex-col gap-4">
+  <a
+    [routerLink]="['/dashboard/recipe', recipe!.id]"
+    class="flex md:flex-col gap-4"
+  >
     <img
       [src]="backendUrl + '/' + recipe!.image"
       [alt]="recipe!.title"
-      class="w-20 h-20 md:w-full md:h-80 border rounded-md object-cover md:opacity-80"
+      class="w-20 h-20 md:w-full md:h-60 border rounded-md object-cover md:opacity-80"
     />
 
-    <div class="flex flex-col justify-evenly h-20 w-6/12">
+    <div class="flex flex-col justify-evenly h-20 w-6/12 md:w-full">
       <p class="text-sm md:text-xl text-black dark:text-white">
         {{ recipe!.title }}
       </p>

@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import {
+  CardRecipes,
   CategoriesResponse,
   CreateFavoriteResponse,
-  GetFavoritesResponse,
+  FavoritesResponse,
   RecipesResponse,
 } from '../interfaces';
 import { environment } from '../../../environments/environment';
@@ -16,15 +17,20 @@ export class DashboardService {
   private http = inject(HttpClient);
   private baseUrl: string = environment.baseUrl;
 
-  //!Tiparlo después
-  private _currentFavorites = signal<any>(null);
+  private _currentFavorites = signal<CardRecipes[] | null>(null);
+  private _categories = signal<CategoriesResponse[] | null>(null);
 
   curretFavorites = computed(() => this._currentFavorites());
+  categories = computed(() => this._categories());
+
+  public isLoading = signal<boolean>(false);
 
   constructor() {
     this.getFavorites().subscribe();
+    this.getAllCategories().subscribe();
   }
 
+  //? Recipes
   getAllRecipes(): Observable<RecipesResponse[]> {
     const url = `${this.baseUrl}/recipes`;
 
@@ -34,16 +40,30 @@ export class DashboardService {
     );
   }
 
-  getAllCategories(): Observable<CategoriesResponse[]> {
-    const url = `${this.baseUrl}/categories`;
+  getRecipesByCagory(id: string): Observable<RecipesResponse[]> {
+    const url = `${this.baseUrl}/recipes/by-category/${id}`;
 
-    return this.http.get<CategoriesResponse[]>(url).pipe(
-      map((categories) => categories),
+    return this.http.get<RecipesResponse[]>(url).pipe(
+      map((recipes) => recipes),
       catchError((err) => throwError(() => err.error.message))
     );
   }
 
-  getFavorites(): Observable<GetFavoritesResponse[]> {
+  //? Categories
+  getAllCategories(): Observable<CategoriesResponse[]> {
+    const url = `${this.baseUrl}/categories`;
+
+    return this.http.get<CategoriesResponse[]>(url).pipe(
+      map((categories) => {
+        this._categories.set(categories);
+        return categories;
+      }),
+      catchError((err) => throwError(() => err.error.message))
+    );
+  }
+
+  //? Favorites
+  getFavorites(): Observable<FavoritesResponse[]> {
     const url = `${this.baseUrl}/favorites`;
     const token = localStorage.getItem('token');
 
@@ -51,10 +71,21 @@ export class DashboardService {
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<GetFavoritesResponse[]>(url, { headers }).pipe(
+    return this.http.get<FavoritesResponse[]>(url, { headers }).pipe(
       map((favoriteRecipes) => {
-        this._currentFavorites.set(favoriteRecipes);
-        return favoriteRecipes as GetFavoritesResponse[];
+        const formatRecipes = favoriteRecipes.map((fav) => {
+          return {
+            id: fav.recipe.id,
+            image: fav.recipe.image,
+            title: fav.recipe.title,
+            User: {
+              firstName: fav.user.firstName,
+            },
+            isFavorite: true,
+          };
+        });
+        this._currentFavorites.set(formatRecipes);
+        return favoriteRecipes as FavoritesResponse[];
       }),
       catchError((err) => throwError(() => err.error.message))
     );

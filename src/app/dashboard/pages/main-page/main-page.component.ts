@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, OnInit } from '@angular/core';
 import {
+  CardRecipes,
   CategoriesResponse,
-  GetFavoritesResponse,
-  RecipesResponse,
+  FavoritesResponse,
 } from '../../interfaces';
 import { DashboardService } from '../../services/dashboard.service';
 import { forkJoin } from 'rxjs';
@@ -13,9 +13,14 @@ import { forkJoin } from 'rxjs';
   styles: ``,
 })
 export class MainPageComponent implements OnInit {
-  public recipes?: RecipesResponse[];
+  public recipes?: CardRecipes[];
   public categories?: CategoriesResponse[];
-  public favoriteRecipes?: GetFavoritesResponse[];
+  public favoriteRecipes?: FavoritesResponse[];
+
+  public finishedLoad = computed<boolean>(() => {
+    if (this.dashboardService.isLoading()) return true;
+    return false;
+  });
 
   constructor(private dashboardService: DashboardService) {}
 
@@ -25,26 +30,48 @@ export class MainPageComponent implements OnInit {
   }
 
   getRecipes() {
+    this.dashboardService.isLoading.set(true);
+
     forkJoin({
       recipes: this.dashboardService.getAllRecipes(),
       favorites: this.dashboardService.getFavorites(),
     }).subscribe({
       next: ({ recipes, favorites }) => {
-        this.recipes = recipes.map((recipe) => {
-          return {
-            ...recipe,
-            isFavorite: favorites.some((fav) => fav.recipeId === recipe.id),
-          };
-        });
+        this.recipes = recipes.map((recipe) => ({
+          ...recipe,
+          id: recipe.id,
+          image: recipe.image,
+          title: recipe.title,
+          User: {
+            firstName: recipe.User.firstName,
+          },
+          isFavorite: favorites.some(
+            (fav: FavoritesResponse) => fav.recipeId === recipe.id
+          ),
+        }));
+        this.dashboardService.isLoading.set(false);
       },
-      error: (error) => console.error('Error:', error),
+      error: (error) => {
+        console.error('Error:', error);
+        this.dashboardService.isLoading.set(false);
+      },
     });
   }
 
   getCategories() {
+    this.dashboardService.isLoading.set(true);
+
     this.dashboardService.getAllCategories().subscribe({
-      next: (categories) => (this.categories = categories),
-      error: (error) => console.error('Error:', error),
+      next: (categories) => {
+        this.dashboardService.isLoading.set(false);
+        return (this.categories = categories);
+      },
+      error: (error) => {
+        this.dashboardService.isLoading.set(false);
+        console.error('Error:', error);
+      },
     });
   }
+
+  //TODO: Agregar paginación
 }

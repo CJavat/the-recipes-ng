@@ -1,10 +1,15 @@
-<div class="min-h-screen pt-5 px-5 flex flex-col">
+<div class="min-h-screen pt-5 flex flex-col justify-center">
+  @if (!finishedLoad()) {
+
   <div class="px-5 hidden md:block">
     <h3 class="text-2xl text-black dark:text-white mb-3">Categorías</h3>
     <div class="text-xs grid grid-cols-5 xl:grid-cols-5 gap-3">
       @for (category of categories; track $index) {
       <a
-        [routerLink]="['category', category.name]"
+        [routerLink]="[
+          'category',
+          category.id.replaceAll(' ', '-').replaceAll(',', '').toLowerCase()
+        ]"
         class="bg-sky-200 hover:bg-sky-300 px-5 py-2 rounded-full text-center"
       >
         {{ category.name }}
@@ -33,4 +38,7 @@
     </p>
     }
   </div>
+  }@else {
+  <shared-spinner />
+  }
 </div>

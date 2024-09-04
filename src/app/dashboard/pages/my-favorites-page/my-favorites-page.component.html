@@ -1,1 +1,20 @@
-<p>my-favorites-page works!</p>
+<div class="flex-1 min-h-screen">
+  @if(!finishedLoad()){
+
+  <h3 class="text-2xl text-black dark:text-white mb-3">Recetas Favoritas</h3>
+
+  @if(favorites && favorites!.length > 0) {
+
+  <div class="grid gap-5 min-w-full grid-cols-1 md:grid-cols-3 xl:grid-cols-4">
+    @for (favorite of favorites; track $index) {
+    <dashboard-recipe-card [recipe]="favorite" />
+    }
+  </div>
+  } @else {
+  <p class="border border-red-500 text-red-500 rounded-md text-center p-2">
+    No hay recetas para mostrar
+  </p>
+  } }@else{
+  <shared-spinner />
+  }
+</div>

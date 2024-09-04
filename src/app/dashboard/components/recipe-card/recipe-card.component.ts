@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { RecipeWithFavorites } from '../../interfaces';
+import { CardRecipes } from '../../interfaces';
 import { environment } from '../../../../environments/environment';
 import { DashboardService } from '../../services/dashboard.service';
 
@@ -11,7 +11,7 @@ export class RecipeCardComponent {
   public backendUrl: string = environment.backendUrl;
 
   @Input({ required: true })
-  public recipe?: RecipeWithFavorites;
+  public recipe?: CardRecipes;
 
   constructor(private dashboardService: DashboardService) {
     if (!this.recipe) return;

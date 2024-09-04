@@ -3,5 +3,7 @@ export * from './routes.interface';
 export * from './recipes-response.interface';
 export * from './categories-response.interface';
 export * from './create-favorite-response.interface';
-export * from './get-favorites-response.interface';
 export * from './recipe-with-favorites.interface';
+export * from './favorites-response.interface';
+export * from './card-recipes.interface';
+export * from './find-user-response.interface';

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FindUserResponse } from '../../../interfaces';
 
 @Component({
   selector: 'dashboard-my-account-page',
@@ -6,6 +7,7 @@ import { Component } from '@angular/core';
   styles: ``,
 })
 export class MyAccountPageComponent {
-  //TODO: IMPLEMENTAR
-  //? Información del usuario
+  public user?: FindUserResponse;
 }
+
+//TODO: Diseño temrinado. Falta consumir la api y hacer los datos dinámicos.

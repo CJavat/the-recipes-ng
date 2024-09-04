@@ -1,1 +1,23 @@
-<p>categories-page works!</p>
+<div>
+  @if(!finishedLoad()){
+
+  <h3 class="text-2xl text-black dark:text-white mb-10">Categorías</h3>
+  <div
+    class="text-xs md:text-lg grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3"
+  >
+    @for (category of categories; track $index) {
+    <a
+      [routerLink]="[
+        '/dashboard/category',
+        category.id.replaceAll(' ', '-').replaceAll(',', '').toLowerCase()
+      ]"
+      class="bg-sky-200 hover:bg-sky-300 px-5 py-2 rounded-full text-center"
+    >
+      {{ category.name }}
+    </a>
+    }
+  </div>
+  } @else {
+  <shared-spinner />
+  }
+</div>
