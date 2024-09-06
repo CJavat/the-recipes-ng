@@ -22,7 +22,7 @@ export class NavbarComponent {
   ];
   public accountRoutes: Routes[] = [
     { label: 'Mi Cuenta', routerLink: 'auth/my-account' },
-    { label: 'Configuración', routerLink: 'auth/settings' },
+    { label: 'Configuraciones', routerLink: 'auth/settings' },
   ];
 
   constructor(private authService: AuthService, private router: Router) {}

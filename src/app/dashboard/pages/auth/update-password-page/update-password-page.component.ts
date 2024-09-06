@@ -1,19 +1,19 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
+import { UserService } from '../../../services';
 import { AuthService } from '../../../../auth/services/auth.service';
-import { UserService } from '../../../services/user.service';
 import { ValidatorsService } from '../../../../shared/services/validators.service';
 
 import { User } from '../../../../auth/interfaces';
 
 @Component({
-  selector: 'dashboard-edit-account',
-  templateUrl: './edit-account.component.html',
+  selector: 'app-update-password-page',
+  templateUrl: './update-password-page.component.html',
 })
-export class EditAccountComponent implements OnInit {
+export class UpdatePasswordPageComponent implements OnInit {
   private router = inject(Router);
 
   public user?: User;
@@ -25,22 +25,21 @@ export class EditAccountComponent implements OnInit {
     private formBuilder: FormBuilder,
     private validatorsService: ValidatorsService
   ) {
-    this.myForm = this.formBuilder.group({
-      firstName: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(this.validatorsService.firstNamePattern),
+    this.myForm = this.formBuilder.group(
+      {
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        rePassword: ['', Validators.required],
+      },
+
+      {
+        validators: [
+          this.validatorsService.isFieldOneEqualFieldTWo(
+            'password',
+            'rePassword'
+          ),
         ],
-      ],
-      lastName: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(this.validatorsService.lastNamePattern),
-        ],
-      ],
-    });
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -49,11 +48,6 @@ export class EditAccountComponent implements OnInit {
       this.router.navigateByUrl('/dashboard');
       return;
     }
-
-    this.myForm.patchValue({
-      firstName: this.user.firstName,
-      lastName: this.user.lastName,
-    });
   }
 
   isValidField(field: string) {
@@ -62,9 +56,10 @@ export class EditAccountComponent implements OnInit {
 
   onSubmit() {
     this.myForm.markAllAsTouched();
-
     this.userService
-      .updateUserProfile(this.authService.curretUser()!.id, this.myForm.value)
+      .updateUserProfile(this.authService.curretUser()!.id, {
+        password: this.myForm.value['password'],
+      })
       .subscribe({
         next: (user) => {
           const token = localStorage.getItem('token') ?? '';
@@ -75,11 +70,11 @@ export class EditAccountComponent implements OnInit {
           this.authService.setAuthentication(updateUser);
 
           Swal.fire(
-            'Se Actualizó Tu Cuenta',
-            'Tu cuenta se ha actualizado correctamente.',
+            'Contraseña Actualizada',
+            'Tu contraseña se ha actualizado correctamente.',
             'success'
           );
-          this.router.navigateByUrl('/dashboard/auth/my-account');
+          this.router.navigateByUrl('/dashboard/auth/settings');
         },
         error: (message) => {
           console.log(message);

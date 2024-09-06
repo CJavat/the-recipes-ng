@@ -14,6 +14,9 @@ import { MyFavoritesPageComponent } from './pages/my-favorites-page/my-favorites
 import { SettingsPageComponent } from './pages/auth/settings-page/settings-page.component';
 import { EditAccountComponent } from './pages/auth/edit-account/edit-account.component';
 import { MyAccountPageComponent } from './pages/auth/my-account-page/my-account-page.component';
+import { UpdatePasswordPageComponent } from './pages/auth/update-password-page/update-password-page.component';
+import { DeleteAccountComponent } from './pages/auth/delete-account/delete-account.component';
+import { RecipesByUserComponent } from './pages/recipes-by-user/recipes-by-user.component';
 
 const routes: Routes = [
   {
@@ -23,16 +26,25 @@ const routes: Routes = [
       { path: '', component: MainPageComponent },
       { path: 'recipes', component: RecipesPageComponent },
       { path: 'recipe/:id', component: RecipePageComponent },
+      { path: 'recipes-by-user/:id', component: RecipesByUserComponent },
       { path: 'categories', component: CategoriesPageComponent },
       { path: 'category/:id', component: CategoryPageComponent },
       { path: 'favorites', component: MyFavoritesPageComponent },
       { path: 'search', component: SearchPageComponent },
-      { path: 'new-recipe', component: CreateRecipeComponent }, //? Create Recipe
-      { path: 'new-recipe/:id', component: CreateRecipeComponent }, //? Update Recipe
-      { path: 'auth/settings', component: SettingsPageComponent },
+      { path: 'new-recipe', component: CreateRecipeComponent },
+      { path: 'edit-recipe/:id', component: CreateRecipeComponent },
       { path: 'auth/my-account', component: MyAccountPageComponent },
       { path: 'auth/edit-account/:id', component: EditAccountComponent },
       { path: 'auth/update-image', component: UpdateImagePageComponent },
+      {
+        path: 'auth/settings',
+        component: SettingsPageComponent,
+        children: [
+          { path: 'update-password', component: UpdatePasswordPageComponent },
+          { path: 'delete-account', component: DeleteAccountComponent },
+          { path: '**', redirectTo: 'auth/settings' },
+        ],
+      },
       { path: '**', redirectTo: 'login' },
     ],
   },

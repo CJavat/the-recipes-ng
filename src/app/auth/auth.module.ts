@@ -11,6 +11,7 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { ForgotPasswordPageComponent } from './pages/forgot-password-page/forgot-password-page.component';
 import { UpdateForgotPasswordPageComponent } from './pages/update-forgot-password-page/update-forgot-password-page.component';
+import { ReactivateAccountPageComponent } from './pages/reactivate-account-page/reactivate-account-page.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { UpdateForgotPasswordPageComponent } from './pages/update-forgot-passwor
     RegisterPageComponent,
     ForgotPasswordPageComponent,
     UpdateForgotPasswordPageComponent,
+    ReactivateAccountPageComponent,
   ],
   imports: [
     CommonModule,

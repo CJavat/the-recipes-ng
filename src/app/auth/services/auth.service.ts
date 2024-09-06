@@ -11,6 +11,9 @@ import {
 } from '../interfaces';
 import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
 
+interface ReactivateAccountResponse {
+  message: string;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -91,6 +94,16 @@ export class AuthService {
 
     return this.http.post(url, { password }).pipe(
       map((msg) => msg as ForgotPasswordResponse),
+      catchError((err) => throwError(() => err.error.message))
+    );
+  }
+
+  reactivateAccount(email: string): Observable<ReactivateAccountResponse> {
+    if (!email) throw new Error('El email es invalido');
+    const url = `${this.baseUrl}/users/reactivate-account`;
+
+    return this.http.post<ReactivateAccountResponse>(url, { email }).pipe(
+      map((msg) => msg),
       catchError((err) => throwError(() => err.error.message))
     );
   }

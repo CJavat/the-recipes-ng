@@ -1,11 +1,13 @@
 import { Component, computed, OnInit } from '@angular/core';
+import { forkJoin } from 'rxjs';
+
+import { RecipeService, DashboardService } from '../../services';
+
 import {
   CardRecipes,
   CategoriesResponse,
   FavoritesResponse,
 } from '../../interfaces';
-import { DashboardService } from '../../services/dashboard.service';
-import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-main-page',
@@ -22,7 +24,10 @@ export class MainPageComponent implements OnInit {
     return false;
   });
 
-  constructor(private dashboardService: DashboardService) {}
+  constructor(
+    private dashboardService: DashboardService,
+    private recipeService: RecipeService
+  ) {}
 
   ngOnInit(): void {
     this.getRecipes();
@@ -33,7 +38,7 @@ export class MainPageComponent implements OnInit {
     this.dashboardService.isLoading.set(true);
 
     forkJoin({
-      recipes: this.dashboardService.getAllRecipes(),
+      recipes: this.recipeService.getAllRecipes(),
       favorites: this.dashboardService.getFavorites(),
     }).subscribe({
       next: ({ recipes, favorites }) => {

@@ -1,1 +1,54 @@
-<p>recipe-page works!</p>
+<div class="border">
+  <div>
+    <img
+      [src]="imageUrl"
+      alt="tacos de hotcakes"
+      class="w-52 h-52 object-cover"
+    />
+    <p>
+      Categoria:
+      <a
+        [routerLink]="['/dashboard/category', recipe?.Category?.id]"
+        routerLinkActive=""
+        >{{ recipe?.Category?.name }}</a
+      >
+    </p>
+    <p>Creado el {{ recipe?.createdAt }}</p>
+    <p>
+      creado por:
+      <a
+        [routerLink]="['/dashboard/recipes-by-user', recipe?.User?.id]"
+        routerLinkActive=""
+        >{{ recipe?.User?.firstName }} {{ recipe?.User?.lastName }}</a
+      >
+    </p>
+  </div>
+
+  <div>
+    <h3>{{ recipe?.title }}</h3>
+
+    <p>
+      {{ recipe?.description }}
+    </p>
+
+    <div>
+      <h5>Ingredientes</h5>
+      <ul>
+        @for (ingredient of recipe?.ingredients; track $index) {}
+        <li>{{ recipe?.ingredients }}</li>
+      </ul>
+    </div>
+
+    <div>
+      <h5>Pasos</h5>
+      <ul>
+        @for (step of recipe?.steps; track $index) {}
+        <li>
+          {{ recipe?.steps }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- //TODO: TERMINAR DISEÑO -->

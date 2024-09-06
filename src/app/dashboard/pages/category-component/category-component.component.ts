@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { DashboardService } from '../../services/dashboard.service';
 import { Router } from '@angular/router';
-import { CardRecipes, CategoriesResponse } from '../../interfaces';
 
+import { RecipeService, DashboardService } from '../../services';
+
+import { CardRecipes, CategoriesResponse } from '../../interfaces';
 @Component({
   selector: 'dashboard-category-page',
   templateUrl: './category-page.component.html',
@@ -15,7 +16,10 @@ export class CategoryPageComponent {
   public currentCategory?: CategoriesResponse;
   public recipes?: CardRecipes[];
 
-  constructor(private dashboardService: DashboardService) {
+  constructor(
+    private dashboardService: DashboardService,
+    private recipeService: RecipeService
+  ) {
     this.categoryId = this.router.url.split('/').at(-1) ?? '';
     this.getRecipesByCategory(this.categoryId);
 
@@ -26,7 +30,7 @@ export class CategoryPageComponent {
   }
 
   private getRecipesByCategory(id: string) {
-    this.dashboardService.getRecipesByCagory(id).subscribe({
+    this.recipeService.getRecipesByCagory(id).subscribe({
       next: (recipes) => {
         this.recipes = recipes.map((recipe) => {
           return {

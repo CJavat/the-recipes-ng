@@ -7,3 +7,4 @@ export * from './recipe-with-favorites.interface';
 export * from './favorites-response.interface';
 export * from './card-recipes.interface';
 export * from './find-user-response.interface';
+export * from './update-user.interface';

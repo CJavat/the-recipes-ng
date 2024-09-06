@@ -1,0 +1,30 @@
+<h3 class="text-4xl text-sky-950 dark:text-slate-50">¡Cuidado!</h3>
+
+<p class="text-red-500 my-5">
+  Estas a punto de eliminar tu cuenta o cancelar tu cuenta temporalmente, ten en
+  cuenta que todos tus datos, recetas y favoritos seran eliminados
+  permanentemente.
+</p>
+
+<p class="text-sky-950 dark:text-slate-50">Selecciona un botón</p>
+
+<div>
+  <button
+    (click)="cancelAccount()"
+    class="uppercase col-span-3 md:col-span-1 mt-5 flex w-full justify-center rounded-md border border-sky-600 hover:bg-sky-500 text-sky-500 hover:text-sky-50 px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+  >
+    Dar de baja mi cuenta
+  </button>
+  <span></span>
+</div>
+
+<div>
+  <button
+    (click)="deleteAccount()"
+    class="uppercase col-span-3 md:col-span-1 mt-5 flex w-full justify-center rounded-md border border-red-600 hover:bg-red-500 text-red-500 hover:text-sky-50 px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+  >
+    Eliminar mi cuenta permanentemente
+  </button>
+
+  <span></span>
+</div>
