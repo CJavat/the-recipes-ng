@@ -10,7 +10,6 @@ import {
   User,
 } from '../interfaces';
 import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
-import { DashboardService } from '../../dashboard/services/dashboard.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +24,7 @@ export class AuthService {
   curretUser = computed(() => this._currentUser());
   authStatus = computed(() => this._authStatus());
 
-  constructor(private readonly dashboardService: DashboardService) {
+  constructor() {
     this.checkAuthStatus().subscribe();
   }
 
@@ -49,7 +48,7 @@ export class AuthService {
     );
   }
 
-  private setAuthentication(user: User): boolean {
+  setAuthentication(user: User): boolean {
     this._currentUser.set(user);
     this._authStatus.set(AuthStatus.authenticated);
 

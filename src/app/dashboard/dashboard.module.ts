@@ -23,6 +23,8 @@ import { SharedModule } from '../shared/shared.module';
 import { RecipeCardComponent } from './components/recipe-card/recipe-card.component';
 import { RecipePageComponent } from './pages/recipe-page/recipe-page.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { EditAccountComponent } from './pages/auth/edit-account/edit-account.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,13 @@ import { FooterComponent } from './components/footer/footer.component';
     CategoryPageComponent,
     RecipePageComponent,
     FooterComponent,
+    EditAccountComponent,
   ],
-  imports: [CommonModule, DashboardRoutingModule, SharedModule],
+  imports: [
+    CommonModule,
+    DashboardRoutingModule,
+    SharedModule,
+    ReactiveFormsModule,
+  ],
 })
 export class DashboardModule {}

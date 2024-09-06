@@ -8,11 +8,12 @@ import { CreateRecipeComponent } from './pages/create-recipe/create-recipe.compo
 import { CategoryPageComponent } from './pages/category-component/category-component.component';
 import { CategoriesPageComponent } from './pages/categories-page/categories-page.component';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
-import { SettingsPageComponent } from './pages/auth/settings-page/settings-page.component';
-import { MyAccountPageComponent } from './pages/auth/my-account-page/my-account-page.component';
+import { RecipePageComponent } from './pages/recipe-page/recipe-page.component';
 import { UpdateImagePageComponent } from './pages/auth/update-image-page/update-image-page.component';
 import { MyFavoritesPageComponent } from './pages/my-favorites-page/my-favorites-page.component';
-import { RecipePageComponent } from './pages/recipe-page/recipe-page.component';
+import { SettingsPageComponent } from './pages/auth/settings-page/settings-page.component';
+import { EditAccountComponent } from './pages/auth/edit-account/edit-account.component';
+import { MyAccountPageComponent } from './pages/auth/my-account-page/my-account-page.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,7 @@ const routes: Routes = [
       { path: 'new-recipe/:id', component: CreateRecipeComponent }, //? Update Recipe
       { path: 'auth/settings', component: SettingsPageComponent },
       { path: 'auth/my-account', component: MyAccountPageComponent },
+      { path: 'auth/edit-account/:id', component: EditAccountComponent },
       { path: 'auth/update-image', component: UpdateImagePageComponent },
       { path: '**', redirectTo: 'login' },
     ],
@@ -41,5 +43,3 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class DashboardRoutingModule {}
-
-//TODO: Falta implementar el auth/update-image

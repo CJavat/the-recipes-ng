@@ -8,7 +8,7 @@ export interface RecipesResponse {
   User: User;
 }
 
-export interface User {
+interface User {
   id: string;
   firstName: string;
   lastName: string;

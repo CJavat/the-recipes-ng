@@ -5,10 +5,12 @@ import {
   CategoriesResponse,
   CreateFavoriteResponse,
   FavoritesResponse,
+  FindUserResponse,
   RecipesResponse,
 } from '../interfaces';
 import { environment } from '../../../environments/environment';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { User } from '../../auth/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -121,6 +123,30 @@ export class DashboardService {
         this.getFavorites().subscribe();
         return response as CreateFavoriteResponse;
       }),
+      catchError((err) => throwError(() => err.error.message))
+    );
+  }
+
+  //? User
+  getUserProfile(id: string): Observable<FindUserResponse> {
+    const url = `${this.baseUrl}/users/${id}`;
+
+    return this.http.get<FindUserResponse>(url).pipe(
+      map((user) => user),
+      catchError((err) => throwError(() => err.error.message))
+    );
+  }
+
+  updateUserProfile(id: string, body: any): Observable<User> {
+    const url = `${this.baseUrl}/users/${id}`;
+    const token = localStorage.getItem('token');
+
+    if (!id || !token) throw new Error('ID o Token invalidos');
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.patch<User>(url, body, { headers }).pipe(
+      map((user) => user),
       catchError((err) => throwError(() => err.error.message))
     );
   }
