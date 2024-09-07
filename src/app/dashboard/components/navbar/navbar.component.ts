@@ -22,6 +22,7 @@ export class NavbarComponent {
   ];
   public accountRoutes: Routes[] = [
     { label: 'Mi Cuenta', routerLink: 'auth/my-account' },
+    { label: 'Mis Recetas', routerLink: 'auth/my-recipes' },
     { label: 'Configuraciones', routerLink: 'auth/settings' },
   ];
 

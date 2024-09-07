@@ -17,6 +17,7 @@ import { MyAccountPageComponent } from './pages/auth/my-account-page/my-account-
 import { UpdatePasswordPageComponent } from './pages/auth/update-password-page/update-password-page.component';
 import { DeleteAccountComponent } from './pages/auth/delete-account/delete-account.component';
 import { RecipesByUserComponent } from './pages/recipes-by-user/recipes-by-user.component';
+import { MyRecipesComponent } from './pages/my-recipes/my-recipes.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,7 @@ const routes: Routes = [
       { path: 'new-recipe', component: CreateRecipeComponent },
       { path: 'edit-recipe/:id', component: CreateRecipeComponent },
       { path: 'auth/my-account', component: MyAccountPageComponent },
+      { path: 'auth/my-recipes', component: MyRecipesComponent },
       { path: 'auth/edit-account/:id', component: EditAccountComponent },
       { path: 'auth/update-image', component: UpdateImagePageComponent },
       {

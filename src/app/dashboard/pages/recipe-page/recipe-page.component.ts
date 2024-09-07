@@ -11,7 +11,6 @@ import { RecipesResponse } from '../../interfaces';
 @Component({
   selector: 'app-recipe-page',
   templateUrl: './recipe-page.component.html',
-  styles: ``,
 })
 export class RecipePageComponent implements OnInit {
   private router = inject(Router);
@@ -46,7 +45,35 @@ export class RecipePageComponent implements OnInit {
       next: (recipe) => {
         this.recipe = recipe;
         this.imageUrl = `${this.hostUrl}/${this.recipe.image}`;
+        console.log(this.recipe);
       },
+      error: (error) => console.error('Error:', error),
+    });
+  }
+
+  toggleSubmit() {
+    if (!this.recipe) return;
+    this.isFavorite = !this.isFavorite;
+
+    this.isFavorite
+      ? this.addFavorite(this.recipe.id)
+      : this.removeFavorite(this.recipe.id);
+  }
+
+  private addFavorite(id: string) {
+    if (!id) return;
+
+    this.dashboardService.setFavorites(id).subscribe({
+      next: (response) => response,
+      error: (error) => console.error('Error:', error),
+    });
+  }
+
+  private removeFavorite(id: string) {
+    if (!id) return;
+
+    this.dashboardService.removeFavorites(id).subscribe({
+      next: (response) => response,
       error: (error) => console.error('Error:', error),
     });
   }

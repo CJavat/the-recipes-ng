@@ -27,6 +27,7 @@ import { RecipeCardComponent } from './components/recipe-card/recipe-card.compon
 import { FooterComponent } from './components/footer/footer.component';
 import { DeleteAccountComponent } from './pages/auth/delete-account/delete-account.component';
 import { RecipesByUserComponent } from './pages/recipes-by-user/recipes-by-user.component';
+import { MyRecipesComponent } from './pages/my-recipes/my-recipes.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { RecipesByUserComponent } from './pages/recipes-by-user/recipes-by-user.
     UpdatePasswordPageComponent,
     DeleteAccountComponent,
     RecipesByUserComponent,
+    MyRecipesComponent,
   ],
   imports: [
     CommonModule,
