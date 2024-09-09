@@ -1,4 +1,4 @@
-import { Component, computed, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { forkJoin } from 'rxjs';
 
 import { RecipeService, DashboardService } from '../../services';
@@ -8,6 +8,7 @@ import {
   CategoriesResponse,
   FavoritesResponse,
 } from '../../interfaces';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-page',
@@ -15,9 +16,14 @@ import {
   styles: ``,
 })
 export class MainPageComponent implements OnInit {
+  private router = inject(Router);
   public recipes?: CardRecipes[];
   public categories?: CategoriesResponse[];
   public favoriteRecipes?: FavoritesResponse[];
+
+  public limit: number = 5;
+  public offset: number = 0;
+  public currentPage: number = 1;
 
   public finishedLoad = computed<boolean>(() => {
     if (this.dashboardService.isLoading()) return true;
@@ -26,19 +32,28 @@ export class MainPageComponent implements OnInit {
 
   constructor(
     private dashboardService: DashboardService,
-    private recipeService: RecipeService
+    private recipeService: RecipeService,
+    private activateRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.getRecipes();
     this.getCategories();
+
+    this.activateRoute.queryParams.subscribe((params) => {
+      this.limit = +params['limit'] || 1;
+      this.offset = +params['offset'] || 0;
+
+      this.currentPage = Math.floor(this.offset / this.limit) + 1;
+
+      this.getRecipes(this.limit, (this.currentPage - 1) * this.limit);
+    });
   }
 
-  getRecipes() {
+  getRecipes(limit?: number, offset?: number) {
     this.dashboardService.isLoading.set(true);
 
     forkJoin({
-      recipes: this.recipeService.getAllRecipes(),
+      recipes: this.recipeService.getAllRecipes(limit!, offset!),
       favorites: this.dashboardService.getFavorites(),
     }).subscribe({
       next: ({ recipes, favorites }) => {
@@ -58,6 +73,8 @@ export class MainPageComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error:', error);
+        const previousUrl = this.router.url;
+        this.router.navigateByUrl(previousUrl);
         this.dashboardService.isLoading.set(false);
       },
     });
@@ -77,6 +94,4 @@ export class MainPageComponent implements OnInit {
       },
     });
   }
-
-  //TODO: Agregar paginación
 }

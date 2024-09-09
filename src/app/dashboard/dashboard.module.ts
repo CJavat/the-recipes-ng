@@ -28,6 +28,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { DeleteAccountComponent } from './pages/auth/delete-account/delete-account.component';
 import { RecipesByUserComponent } from './pages/recipes-by-user/recipes-by-user.component';
 import { MyRecipesComponent } from './pages/my-recipes/my-recipes.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { MyRecipesComponent } from './pages/my-recipes/my-recipes.component';
     DeleteAccountComponent,
     RecipesByUserComponent,
     MyRecipesComponent,
+    PaginationComponent,
   ],
   imports: [
     CommonModule,

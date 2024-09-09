@@ -1,4 +1,4 @@
-<div class="min-h-screen pt-5 flex flex-col justify-center">
+<div class="min-h-screen pt-5 flex flex-col">
   @if (!finishedLoad()) {
 
   <div class="px-5 hidden md:block">
@@ -20,7 +20,7 @@
 
   <dashboard-add-recipe-button class="block my-5 self-center cursor-pointer" />
 
-  <div class="flex-1 px-5">
+  <div class="px-5">
     <h3 class="text-2xl text-black dark:text-white mb-3">Recetas</h3>
 
     @if(recipes && recipes!.length > 0) {
@@ -38,6 +38,12 @@
     </p>
     }
   </div>
+
+  <dashboard-pagination
+    [currentPage]="currentPage"
+    route="/dashboard"
+    *ngIf="recipes!.length > 0"
+  />
   }@else {
   <shared-spinner />
   }

@@ -20,6 +20,11 @@
   }
 </div>
 
+<dashboard-pagination
+  [currentPage]="currentPage"
+  route="/dashboard/recipes"
+  *ngIf="recipes!.length > 0"
+/>
 }@else{
 <shared-spinner />
 }

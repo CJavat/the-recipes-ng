@@ -15,10 +15,15 @@ export class RecipeService {
 
   constructor() {}
 
-  getAllRecipes(): Observable<RecipesResponse[]> {
+  getAllRecipes(limit: number, offset: number): Observable<RecipesResponse[]> {
     const url = `${this.baseUrl}/recipes`;
 
-    return this.http.get<RecipesResponse[]>(url).pipe(
+    let params = new HttpParams().set('limit', limit);
+    if (offset !== 0) {
+      params = params.set('offset', offset);
+    }
+
+    return this.http.get<RecipesResponse[]>(url, { params }).pipe(
       map((recipes) => recipes),
       catchError((err) => throwError(() => err.error.message))
     );

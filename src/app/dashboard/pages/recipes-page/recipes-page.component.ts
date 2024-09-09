@@ -9,8 +9,9 @@ import { CardRecipes, FavoritesResponse } from '../../interfaces';
   templateUrl: './recipes-page.component.html',
 })
 export class RecipesPageComponent implements OnInit {
-  public recipes?: CardRecipes[];
+  public currentPage: number = 1;
 
+  public recipes?: CardRecipes[];
   public favoriteRecipes?: FavoritesResponse[];
 
   public finishedLoad = computed<boolean>(() => {
@@ -30,7 +31,7 @@ export class RecipesPageComponent implements OnInit {
   getRecipes() {
     this.dashboardService.isLoading.set(true);
     forkJoin({
-      recipes: this.recipeService.getAllRecipes(),
+      recipes: this.recipeService.getAllRecipes(1, 2), //TODO: Arreglar esta parte de la paginación
       favorites: this.dashboardService.getFavorites(),
     }).subscribe({
       next: ({ recipes, favorites }) => {

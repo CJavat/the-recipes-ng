@@ -10,6 +10,7 @@ import {
   User,
 } from '../interfaces';
 import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
+import Swal from 'sweetalert2';
 
 interface ReactivateAccountResponse {
   message: string;
@@ -46,6 +47,8 @@ export class AuthService {
       map((user) => this.setAuthentication(user)),
       catchError((err) => {
         this._authStatus.set(AuthStatus.notAuthenticated);
+        Swal.fire('Error', err.message, 'error');
+
         return of(false);
       })
     );

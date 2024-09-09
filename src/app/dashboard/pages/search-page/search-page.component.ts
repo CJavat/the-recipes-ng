@@ -9,7 +9,6 @@ import { DashboardService } from '../../services';
 @Component({
   selector: 'app-search-page',
   templateUrl: './search-page.component.html',
-  styles: ``,
 })
 export class SearchPageComponent implements OnInit {
   public searchQuery: string = '';
@@ -52,5 +51,3 @@ export class SearchPageComponent implements OnInit {
     });
   }
 }
-
-//TODO: Agregar paginación
