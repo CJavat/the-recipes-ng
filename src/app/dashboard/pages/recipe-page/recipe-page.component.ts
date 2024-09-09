@@ -8,6 +8,7 @@ import { environment } from '../../../../environments/environment';
 
 import { User } from '../../../auth/interfaces';
 import { RecipesResponse } from '../../interfaces';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-recipe-page',
   templateUrl: './recipe-page.component.html',
@@ -18,9 +19,10 @@ export class RecipePageComponent implements OnInit {
   private hostUrl = environment.backendUrl;
 
   public currentUser?: User | null;
-  public isFavorite: boolean = false;
   public recipe?: RecipesResponse;
   public imageUrl: string = '';
+  public isFavorite: boolean = false;
+  public isMyRecipe: boolean = false;
 
   constructor(
     private dashboardService: DashboardService,
@@ -45,7 +47,20 @@ export class RecipePageComponent implements OnInit {
       next: (recipe) => {
         this.recipe = recipe;
         this.imageUrl = `${this.hostUrl}/${this.recipe.image}`;
-        console.log(this.recipe);
+        this.isMyRecipe = this.recipe?.User?.id === this.currentUser?.id;
+      },
+      error: (error) => console.error('Error:', error),
+    });
+  }
+
+  deleteRecipe() {
+    if (!this.recipe?.id) return;
+
+    this.recipeService.deleteRecipe(this.recipe.id).subscribe({
+      next: ({ message }) => {
+        Swal.fire('Receta Eliminada', message ?? '', 'success').then(() =>
+          this.router.navigateByUrl('/dashboard')
+        );
       },
       error: (error) => console.error('Error:', error),
     });

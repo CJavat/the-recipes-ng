@@ -7,7 +7,6 @@
     <div
       class="mt-6 w-full md:max-w-7xl container mx-auto flex flex-col justify-center items-center"
     >
-      <!-- [formGroup]="myForm" (ngSubmit)="onSubmit()" -->
       <div class="px-4 py-6 sm:px-0">
         <input
           #myInputFile
@@ -18,7 +17,7 @@
 
         <button
           (click)="myInputFile.click()"
-          class="h-36 w-2h-36 md:h-56 md:w-56 inline-block relative"
+          class="h-36 w-36 md:h-56 md:w-56 inline-block relative"
         >
           <img
             [src]="imageProfile"

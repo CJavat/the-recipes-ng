@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormGroup,
+  ValidationErrors,
+} from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -7,12 +12,22 @@ import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 export class ValidatorsService {
   public firstNamePattern: string = '([a-zA-Z]+)';
   public lastNamePattern: string = '([a-zA-Z]+)';
+  public titlePattern: string = '^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$';
   public emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
 
   constructor() {}
 
   public isValidField(myForm: FormGroup, field: string): boolean | null {
-    return myForm.controls[field].errors && myForm.controls[field].touched;
+    const control = myForm.get(field);
+
+    if (control instanceof FormArray) {
+      // Recorre cada control dentro del FormArray y verifica si alguno tiene errores y ha sido tocado
+      return control.controls.some((ctrl) => ctrl.errors && ctrl.touched);
+    }
+
+    // return myForm.controls[field].errors && myForm.controls[field].touched;
+
+    return control ? control.errors && control.touched : false;
   }
 
   public isFieldOneEqualFieldTWo(field1: string, field2: string) {
