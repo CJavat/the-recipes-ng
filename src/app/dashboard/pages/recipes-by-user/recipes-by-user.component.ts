@@ -68,6 +68,7 @@ export class RecipesByUserComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error:', error);
+        this.recipes = [];
         this.router.navigateByUrl('/dashboard/recipes-by-user/' + this.userId);
       },
     });
