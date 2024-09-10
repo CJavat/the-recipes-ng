@@ -13,7 +13,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
-  styles: ``,
 })
 export class MainPageComponent implements OnInit {
   private router = inject(Router);
@@ -40,7 +39,7 @@ export class MainPageComponent implements OnInit {
     this.getCategories();
 
     this.activateRoute.queryParams.subscribe((params) => {
-      this.limit = +params['limit'] || 1;
+      this.limit = +params['limit'] || 6;
       this.offset = +params['offset'] || 0;
 
       this.currentPage = Math.floor(this.offset / this.limit) + 1;
@@ -72,9 +71,8 @@ export class MainPageComponent implements OnInit {
         this.dashboardService.isLoading.set(false);
       },
       error: (error) => {
-        console.error('Error:', error);
-        const previousUrl = this.router.url;
-        this.router.navigateByUrl(previousUrl);
+        console.log(error);
+        this.router.navigateByUrl('/dashboard');
         this.dashboardService.isLoading.set(false);
       },
     });

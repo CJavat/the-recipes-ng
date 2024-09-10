@@ -12,6 +12,13 @@
 
     }
   </div>
+
+  <dashboard-pagination
+    [limit]="limit"
+    [currentPage]="currentPage"
+    [route]="'/dashboard/recipes-by-user/' + userId"
+    *ngIf="recipes!.length > 0"
+  />
   } @else {
   <p class="border border-red-500 text-red-500 rounded-md text-center p-2">
     No hay recetas para mostrar

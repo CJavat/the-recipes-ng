@@ -4,15 +4,18 @@ import { forkJoin } from 'rxjs';
 import { RecipeService, DashboardService } from '../../services';
 
 import { CardRecipes, FavoritesResponse } from '../../interfaces';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-recipes-page',
   templateUrl: './recipes-page.component.html',
 })
 export class RecipesPageComponent implements OnInit {
-  public currentPage: number = 1;
-
   public recipes?: CardRecipes[];
   public favoriteRecipes?: FavoritesResponse[];
+
+  public limit: number = 5;
+  public offset: number = 0;
+  public currentPage: number = 1;
 
   public finishedLoad = computed<boolean>(() => {
     if (this.dashboardService.isLoading()) return true;
@@ -21,17 +24,25 @@ export class RecipesPageComponent implements OnInit {
 
   constructor(
     private dashboardService: DashboardService,
-    private recipeService: RecipeService
+    private recipeService: RecipeService,
+    private activateRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.getRecipes();
+    this.activateRoute.queryParams.subscribe((params) => {
+      this.limit = +params['limit'] || 5;
+      this.offset = +params['offset'] || 0;
+
+      this.currentPage = Math.floor(this.offset / this.limit) + 1;
+
+      this.getRecipes(this.limit, (this.currentPage - 1) * this.limit);
+    });
   }
 
-  getRecipes() {
+  getRecipes(limit: number, offset: number) {
     this.dashboardService.isLoading.set(true);
     forkJoin({
-      recipes: this.recipeService.getAllRecipes(1, 2), //TODO: Arreglar esta parte de la paginación
+      recipes: this.recipeService.getAllRecipes(limit!, offset!),
       favorites: this.dashboardService.getFavorites(),
     }).subscribe({
       next: ({ recipes, favorites }) => {
@@ -57,5 +68,3 @@ export class RecipesPageComponent implements OnInit {
     });
   }
 }
-
-//TODO: Agregar paginación

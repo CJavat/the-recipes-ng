@@ -21,6 +21,7 @@
 </div>
 
 <dashboard-pagination
+  [limit]="limit"
   [currentPage]="currentPage"
   route="/dashboard/recipes"
   *ngIf="recipes!.length > 0"

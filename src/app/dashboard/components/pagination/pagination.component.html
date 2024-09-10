@@ -2,12 +2,17 @@
   class="flex items-center justify-between bg-sky-50 dark:bg-sky-950 py-3 sm:px-6"
 >
   <div class="flex flex-1 justify-between">
+    @if(currentPage !== 1) {
+
     <button
       (click)="previousPage()"
       class="border-sky-600 hover:bg-sky-500 text-sky-500 hover:text-sky-50 relative ml-3 inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium"
     >
       Anterior
     </button>
+    } @else {
+    <div></div>
+    }
 
     <button
       (click)="nextPage()"
@@ -17,5 +22,3 @@
     </button>
   </div>
 </div>
-
-<!-- Esconder en la página 1 -->

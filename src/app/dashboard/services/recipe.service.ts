@@ -29,32 +29,55 @@ export class RecipeService {
     );
   }
 
-  getRecipesByCagory(id: string): Observable<RecipesResponse[]> {
+  getRecipesByCagory(
+    id: string,
+    limit: number,
+    offset: number
+  ): Observable<RecipesResponse[]> {
     const url = `${this.baseUrl}/recipes/by-category/${id}`;
 
-    return this.http.get<RecipesResponse[]>(url).pipe(
+    let params = new HttpParams().set('limit', limit);
+    if (offset !== 0) {
+      params = params.set('offset', offset);
+    }
+
+    return this.http.get<RecipesResponse[]>(url, { params }).pipe(
       map((recipes) => recipes),
       catchError((err) => throwError(() => err.error.message))
     );
   }
 
-  getRecipesByUser(id: string): Observable<RecipesResponse[]> {
+  getRecipesByUser(
+    id: string,
+    limit: number,
+    offset: number
+  ): Observable<RecipesResponse[]> {
     const url = `${this.baseUrl}/recipes/by-user/${id}`;
 
-    return this.http.get<RecipesResponse[]>(url).pipe(
+    let params = new HttpParams().set('limit', limit);
+    if (offset !== 0) {
+      params = params.set('offset', offset);
+    }
+
+    return this.http.get<RecipesResponse[]>(url, { params }).pipe(
       map((recipes) => recipes),
       catchError((err) => throwError(() => err.error.message))
     );
   }
 
-  getMyRecipes(): Observable<RecipesResponse[]> {
+  getMyRecipes(limit: number, offset: number): Observable<RecipesResponse[]> {
     const url = `${this.baseUrl}/recipes/own-recipes`;
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Token not found');
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<RecipesResponse[]>(url, { headers }).pipe(
+    let params = new HttpParams().set('limit', limit);
+    if (offset !== 0) {
+      params = params.set('offset', offset);
+    }
+
+    return this.http.get<RecipesResponse[]>(url, { headers, params }).pipe(
       map((recipes) => recipes),
       catchError((err) => throwError(() => err.error.message))
     );

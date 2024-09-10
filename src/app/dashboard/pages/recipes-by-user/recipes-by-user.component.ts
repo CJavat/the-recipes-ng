@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { RecipeService, DashboardService } from '../../services';
 
@@ -9,23 +9,41 @@ import { CardRecipes, CategoriesResponse } from '../../interfaces';
   templateUrl: './recipes-by-user.component.html',
   styles: ``,
 })
-export class RecipesByUserComponent {
+export class RecipesByUserComponent implements OnInit {
   private router = inject(Router);
-  private userId: string = '';
 
+  public userId: string = '';
   public recipes?: CardRecipes[];
   public userName?: string;
 
+  public limit: number = 5;
+  public offset: number = 0;
+  public currentPage: number = 1;
+
   constructor(
     private dashboardService: DashboardService,
-    private recipeService: RecipeService
-  ) {
+    private recipeService: RecipeService,
+    private activateRoute: ActivatedRoute
+  ) {}
+
+  ngOnInit(): void {
     this.userId = this.router.url.split('/').at(-1) ?? '';
-    this.getRecipesByUser(this.userId);
+    if (this.userId.includes('?')) {
+      this.userId = this.userId.split('?')[0];
+    }
+
+    this.activateRoute.queryParams.subscribe((params) => {
+      this.limit = +params['limit'] || 5;
+      this.offset = +params['offset'] || 0;
+
+      this.currentPage = Math.floor(this.offset / this.limit) + 1;
+
+      this.getRecipesByUser(this.userId, this.limit, this.offset);
+    });
   }
 
-  private getRecipesByUser(id: string) {
-    this.recipeService.getRecipesByUser(id).subscribe({
+  private getRecipesByUser(id: string, limit: number, offset: number) {
+    this.recipeService.getRecipesByUser(id, limit, offset).subscribe({
       next: (recipes) => {
         this.recipes = recipes.map((recipe) => {
           return {
@@ -48,9 +66,10 @@ export class RecipesByUserComponent {
 
         return recipes;
       },
-      error: (error) => console.error('Error:', error),
+      error: (error) => {
+        console.error('Error:', error);
+        this.router.navigateByUrl('/dashboard/recipes-by-user/' + this.userId);
+      },
     });
   }
 }
-
-//TODO: Agregar paginación

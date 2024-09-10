@@ -14,7 +14,8 @@ export class PaginationComponent implements OnInit {
   @Input()
   public currentPage: number = 1;
 
-  public limit: number = 5;
+  @Input({ required: true })
+  public limit: number = 0;
 
   constructor() {}
 
