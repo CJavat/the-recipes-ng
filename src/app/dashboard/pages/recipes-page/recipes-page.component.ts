@@ -62,6 +62,7 @@ export class RecipesPageComponent implements OnInit {
         this.dashboardService.isLoading.set(false);
       },
       error: (error) => {
+        this.recipes = [];
         this.dashboardService.isLoading.set(false);
         console.error('Error:', error);
       },

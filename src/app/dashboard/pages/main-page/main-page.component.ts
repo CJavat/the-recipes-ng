@@ -72,6 +72,7 @@ export class MainPageComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
+        this.recipes = [];
         this.router.navigateByUrl('/dashboard');
         this.dashboardService.isLoading.set(false);
       },
