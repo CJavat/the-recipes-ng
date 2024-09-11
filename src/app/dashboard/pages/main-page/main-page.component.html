@@ -1,4 +1,4 @@
-<div class="min-h-screen pt-5 flex flex-col">
+<div class="min-h-screen pt-5 flex flex-col justify-center">
   @if (!finishedLoad()) {
 
   <div class="px-5 hidden md:block">
@@ -42,10 +42,13 @@
   <dashboard-pagination
     [limit]="limit"
     [currentPage]="currentPage"
+    [finalPage]="finalPage"
     route="/dashboard"
     *ngIf="recipes!.length > 0"
   />
   }@else {
-  <shared-spinner />
+  <div class="self-center w-full flex justify-center items-center">
+    <shared-spinner />
+  </div>
   }
 </div>

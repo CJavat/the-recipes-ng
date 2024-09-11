@@ -1,4 +1,11 @@
 export interface RecipesResponse {
+  recipes: Recipe[];
+  totalRecipes: number;
+  currentPage: number;
+  totalPages: number;
+}
+
+export interface Recipe {
   id: string;
   title: string;
   description: string;

@@ -16,6 +16,7 @@ export class MyRecipesComponent implements OnInit {
   public limit: number = 5;
   public offset: number = 0;
   public currentPage: number = 1;
+  public finalPage: number = 2;
 
   constructor(
     private recipeService: RecipeService,
@@ -36,7 +37,7 @@ export class MyRecipesComponent implements OnInit {
 
   private getRecipes(limit?: number, offset?: number) {
     this.recipeService.getMyRecipes(limit!, offset!).subscribe({
-      next: (recipes) => {
+      next: ({ recipes, totalPages }) => {
         this.recipes = recipes.map((recipe) => {
           return {
             id: recipe.id,
@@ -51,6 +52,8 @@ export class MyRecipesComponent implements OnInit {
                 ?.some((fav) => fav.id === recipe.id) ?? false,
           };
         });
+
+        this.finalPage = totalPages;
       },
       error: (error) => {
         this.recipes = [];

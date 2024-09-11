@@ -5,7 +5,6 @@ import { CategoriesResponse } from '../../interfaces';
 @Component({
   selector: 'app-categories-page',
   templateUrl: './categories-page.component.html',
-  styles: ``,
 })
 export class CategoriesPageComponent implements OnInit {
   public categories?: CategoriesResponse[];

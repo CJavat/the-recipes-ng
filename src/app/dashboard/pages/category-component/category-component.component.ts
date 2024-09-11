@@ -19,6 +19,7 @@ export class CategoryPageComponent implements OnInit {
   public limit: number = 5;
   public offset: number = 0;
   public currentPage: number = 1;
+  public finalPage: number = 2;
 
   constructor(
     private dashboardService: DashboardService,
@@ -52,7 +53,7 @@ export class CategoryPageComponent implements OnInit {
 
   private getRecipesByCategory(id: string, limit: number, offset: number) {
     this.recipeService.getRecipesByCagory(id, limit, offset).subscribe({
-      next: (recipes) => {
+      next: ({ recipes, totalPages }) => {
         this.recipes = recipes.map((recipe) => {
           return {
             id: recipe.id,
@@ -67,6 +68,8 @@ export class CategoryPageComponent implements OnInit {
                 ?.some((fav) => fav.id === recipe.id) ?? false,
           };
         });
+
+        this.finalPage = totalPages;
 
         return recipes;
       },
