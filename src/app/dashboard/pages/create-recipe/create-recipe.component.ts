@@ -84,7 +84,11 @@ export class CreateRecipeComponent implements OnInit {
             image: recipe.image,
           });
 
-          this.imageUrl = `${this.hostUrl}/${recipe.image}`;
+          if (recipe.image.includes('http')) {
+            this.imageUrl = `${recipe.image}`;
+          } else {
+            this.imageUrl = `${this.hostUrl}/${recipe.image}`;
+          }
         },
         error: (error) => {
           Swal.fire('Error', error[0], 'error');

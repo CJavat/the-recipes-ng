@@ -24,9 +24,13 @@ export class UpdateImagePageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.imageProfile = `${this.hostUrl}/${
-      this.authService.curretUser()?.avatar
-    }`;
+    if (this.authService.curretUser()?.avatar.includes('http')) {
+      this.imageProfile = this.authService.curretUser()!.avatar;
+    } else {
+      this.imageProfile = `${this.hostUrl}/${
+        this.authService.curretUser()?.avatar
+      }`;
+    }
   }
 
   onFileSelected(event: Event): void {
