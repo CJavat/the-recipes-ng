@@ -4,7 +4,7 @@ import { catchError, map, Observable, throwError } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 
-import { RecipesResponse } from '../interfaces';
+import { Recipe, RecipesResponse } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,7 @@ export class RecipeService {
 
   constructor() {}
 
-  getAllRecipes(limit: number, offset: number): Observable<RecipesResponse[]> {
+  getAllRecipes(limit: number, offset: number): Observable<RecipesResponse> {
     const url = `${this.baseUrl}/recipes`;
 
     let params = new HttpParams().set('limit', limit);
@@ -23,7 +23,7 @@ export class RecipeService {
       params = params.set('offset', offset);
     }
 
-    return this.http.get<RecipesResponse[]>(url, { params }).pipe(
+    return this.http.get<RecipesResponse>(url, { params }).pipe(
       map((recipes) => recipes),
       catchError((err) => throwError(() => err.error.message))
     );
@@ -33,7 +33,7 @@ export class RecipeService {
     id: string,
     limit: number,
     offset: number
-  ): Observable<RecipesResponse[]> {
+  ): Observable<RecipesResponse> {
     const url = `${this.baseUrl}/recipes/by-category/${id}`;
 
     let params = new HttpParams().set('limit', limit);
@@ -41,7 +41,7 @@ export class RecipeService {
       params = params.set('offset', offset);
     }
 
-    return this.http.get<RecipesResponse[]>(url, { params }).pipe(
+    return this.http.get<RecipesResponse>(url, { params }).pipe(
       map((recipes) => recipes),
       catchError((err) => throwError(() => err.error.message))
     );
@@ -51,7 +51,7 @@ export class RecipeService {
     id: string,
     limit: number,
     offset: number
-  ): Observable<RecipesResponse[]> {
+  ): Observable<RecipesResponse> {
     const url = `${this.baseUrl}/recipes/by-user/${id}`;
 
     let params = new HttpParams().set('limit', limit);
@@ -59,13 +59,13 @@ export class RecipeService {
       params = params.set('offset', offset);
     }
 
-    return this.http.get<RecipesResponse[]>(url, { params }).pipe(
+    return this.http.get<RecipesResponse>(url, { params }).pipe(
       map((recipes) => recipes),
       catchError((err) => throwError(() => err.error.message))
     );
   }
 
-  getMyRecipes(limit: number, offset: number): Observable<RecipesResponse[]> {
+  getMyRecipes(limit: number, offset: number): Observable<RecipesResponse> {
     const url = `${this.baseUrl}/recipes/own-recipes`;
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Token not found');
@@ -77,55 +77,52 @@ export class RecipeService {
       params = params.set('offset', offset);
     }
 
-    return this.http.get<RecipesResponse[]>(url, { headers, params }).pipe(
+    return this.http.get<RecipesResponse>(url, { headers, params }).pipe(
       map((recipes) => recipes),
       catchError((err) => throwError(() => err.error.message))
     );
   }
 
-  getRecipeById(id: string): Observable<RecipesResponse> {
+  getRecipeById(id: string): Observable<Recipe> {
     const url = `${this.baseUrl}/recipes/${id}`;
 
-    return this.http.get<RecipesResponse>(url).pipe(
+    return this.http.get<Recipe>(url).pipe(
       map((recipes) => recipes),
       catchError((err) => throwError(() => err.error.message))
     );
   }
 
-  searchRecipes(title: string): Observable<RecipesResponse[]> {
+  searchRecipes(title: string): Observable<RecipesResponse> {
     const url = `${this.baseUrl}/recipes/search`;
     const params = new HttpParams().set('title', title);
 
-    return this.http.get<RecipesResponse[]>(url, { params }).pipe(
+    return this.http.get<RecipesResponse>(url, { params }).pipe(
       map((recipes) => recipes),
       catchError((err) => throwError(() => err.error.message))
     );
   }
 
-  createRecipe(formData: FormData): Observable<RecipesResponse> {
+  createRecipe(formData: FormData): Observable<Recipe> {
     const url = `${this.baseUrl}/recipes`;
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Token not found');
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.post<RecipesResponse>(url, formData, { headers }).pipe(
+    return this.http.post<Recipe>(url, formData, { headers }).pipe(
       map((recipes) => recipes),
       catchError((err) => throwError(() => err.error.message))
     );
   }
 
-  updateRecipe(
-    recipeId: string,
-    formData: FormData
-  ): Observable<RecipesResponse> {
+  updateRecipe(recipeId: string, formData: FormData): Observable<Recipe> {
     const url = `${this.baseUrl}/recipes/${recipeId}`;
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Token not found');
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.patch<RecipesResponse>(url, formData, { headers }).pipe(
+    return this.http.patch<Recipe>(url, formData, { headers }).pipe(
       map((recipes) => recipes),
       catchError((err) => throwError(() => err.error.message))
     );

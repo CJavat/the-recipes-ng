@@ -7,7 +7,7 @@ import { RecipeService, DashboardService } from '../../services';
 import { environment } from '../../../../environments/environment';
 
 import { User } from '../../../auth/interfaces';
-import { RecipesResponse } from '../../interfaces';
+import { Recipe, RecipesResponse } from '../../interfaces';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-recipe-page',
@@ -19,7 +19,7 @@ export class RecipePageComponent implements OnInit {
   private hostUrl = environment.backendUrl;
 
   public currentUser?: User | null;
-  public recipe?: RecipesResponse;
+  public recipe?: Recipe;
   public imageUrl: string = '';
   public isFavorite: boolean = false;
   public isMyRecipe: boolean = false;
@@ -44,8 +44,8 @@ export class RecipePageComponent implements OnInit {
 
   getRecipe() {
     this.recipeService.getRecipeById(this.recipeId).subscribe({
-      next: (recipe) => {
-        this.recipe = recipe;
+      next: (recipes) => {
+        this.recipe = recipes;
         this.imageUrl = `${this.hostUrl}/${this.recipe.image}`;
         this.isMyRecipe = this.recipe?.User?.id === this.currentUser?.id;
       },

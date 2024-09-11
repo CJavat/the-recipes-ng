@@ -29,7 +29,7 @@ export class SearchPageComponent implements OnInit {
 
   private searchRecipe(title: string) {
     this.recipeService.searchRecipes(title).subscribe({
-      next: (recipes) => {
+      next: ({ recipes }) => {
         this.recipes = recipes.map((recipe) => {
           return {
             id: recipe.id,

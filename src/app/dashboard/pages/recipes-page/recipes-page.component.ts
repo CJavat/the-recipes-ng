@@ -16,6 +16,7 @@ export class RecipesPageComponent implements OnInit {
   public limit: number = 5;
   public offset: number = 0;
   public currentPage: number = 1;
+  public finalPage: number = 2;
 
   public finishedLoad = computed<boolean>(() => {
     if (this.dashboardService.isLoading()) return true;
@@ -45,7 +46,8 @@ export class RecipesPageComponent implements OnInit {
       recipes: this.recipeService.getAllRecipes(limit!, offset!),
       favorites: this.dashboardService.getFavorites(),
     }).subscribe({
-      next: ({ recipes, favorites }) => {
+      next: ({ recipes: recipesResponse, favorites }) => {
+        const { recipes, totalPages } = recipesResponse;
         this.recipes = recipes.map((recipe) => ({
           ...recipe,
           id: recipe.id,
@@ -58,6 +60,8 @@ export class RecipesPageComponent implements OnInit {
             (fav: FavoritesResponse) => fav.recipeId === recipe.id
           ),
         }));
+
+        this.finalPage = totalPages;
 
         this.dashboardService.isLoading.set(false);
       },

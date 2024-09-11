@@ -12,7 +12,7 @@
     </button>
     } @else {
     <div></div>
-    }
+    } @if(finalPage !== currentPage) {
 
     <button
       (click)="nextPage()"
@@ -20,5 +20,6 @@
     >
       Siguiente
     </button>
+    }
   </div>
 </div>
