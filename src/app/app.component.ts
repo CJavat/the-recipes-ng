@@ -36,18 +36,22 @@ export class AppComponent implements OnInit {
     return true;
   });
 
-  public authStatusChangedEffect = effect(() => {
-    switch (this.authService.authStatus()) {
-      case AuthStatus.checking:
-        return;
+  // public authStatusChangedEffect = effect(() => {
+  //   switch (this.authService.authStatus()) {
+  //     case AuthStatus.checking:
+  //       return;
 
-      case AuthStatus.authenticated:
-        this.router.navigateByUrl(this.destinationUrl);
-        break;
+  //     case AuthStatus.authenticated:
+  //       console.log(this.destinationUrl);
+  //       console.log('Entró');
+  //       this.router.navigateByUrl(this.destinationUrl);
+  //       break;
 
-      case AuthStatus.notAuthenticated:
-        this.router.navigateByUrl(this.destinationUrl);
-        break;
-    }
-  });
+  //     case AuthStatus.notAuthenticated:
+  //       console.log(this.destinationUrl);
+  //       console.log('Entró');
+  //       this.router.navigateByUrl(this.destinationUrl);
+  //       break;
+  //   }
+  // });
 }
