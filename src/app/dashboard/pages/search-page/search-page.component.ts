@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { RecipeService } from '../../services/recipe.service';
@@ -14,6 +14,11 @@ export class SearchPageComponent implements OnInit {
   public searchQuery: string = '';
   public recipes: CardRecipes[] = [];
 
+  public finishedLoad = computed<boolean>(() => {
+    if (this.dashboardService.isLoading()) return true;
+    return false;
+  });
+
   constructor(
     private route: ActivatedRoute,
     private recipeService: RecipeService,
@@ -28,6 +33,7 @@ export class SearchPageComponent implements OnInit {
   }
 
   private searchRecipe(title: string) {
+    this.dashboardService.isLoading.set(true);
     this.recipeService.searchRecipes(title).subscribe({
       next: (recipes) => {
         this.recipes = recipes.map((recipe) => {
@@ -44,8 +50,13 @@ export class SearchPageComponent implements OnInit {
                 ?.some((fav) => fav.id === recipe.id) ?? false,
           };
         });
+
+        this.dashboardService.isLoading.set(false);
       },
-      error: (error) => console.error('Error:', error),
+      error: (error) => {
+        console.error('Error:', error);
+        this.dashboardService.isLoading.set(false);
+      },
     });
   }
 }

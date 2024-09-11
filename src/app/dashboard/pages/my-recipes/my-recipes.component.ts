@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { RecipeService } from '../../services/recipe.service';
 import { CardRecipes } from '../../interfaces';
 import { DashboardService } from '../../services/dashboard.service';
@@ -18,6 +18,11 @@ export class MyRecipesComponent implements OnInit {
   public currentPage: number = 1;
   public finalPage: number = 2;
 
+  public finishedLoad = computed<boolean>(() => {
+    if (this.dashboardService.isLoading()) return true;
+    return false;
+  });
+
   constructor(
     private recipeService: RecipeService,
     private dashboardService: DashboardService,
@@ -36,6 +41,7 @@ export class MyRecipesComponent implements OnInit {
   }
 
   private getRecipes(limit?: number, offset?: number) {
+    this.dashboardService.isLoading.set(true);
     this.recipeService.getMyRecipes(limit!, offset!).subscribe({
       next: ({ recipes, totalPages }) => {
         this.recipes = recipes.map((recipe) => {
@@ -54,10 +60,12 @@ export class MyRecipesComponent implements OnInit {
         });
 
         this.finalPage = totalPages;
+        this.dashboardService.isLoading.set(false);
       },
       error: (error) => {
         this.recipes = [];
         console.error('Error getting my recipes:', error);
+        this.dashboardService.isLoading.set(false);
         this.router.navigateByUrl('/dashboard/auth/my-recipes');
       },
     });

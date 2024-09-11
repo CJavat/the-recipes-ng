@@ -3,7 +3,7 @@
     Resultados encontrados con: {{ searchQuery }}
   </h3>
 
-  @if(recipes && recipes!.length > 0) {
+  @if(!finishedLoad()) { @if(recipes && recipes!.length > 0) {
 
   <div class="grid gap-5 grid-cols-1 md:grid-cols-3 xl:grid-cols-4">
     @for (recipe of recipes; track $index) {
@@ -16,5 +16,9 @@
   <p class="border border-red-500 text-red-500 rounded-md text-center p-2">
     No hay recetas para mostrar
   </p>
+  } } @else {
+  <div class="self-center w-full flex justify-center items-center">
+    <shared-spinner />
+  </div>
   }
 </div>
