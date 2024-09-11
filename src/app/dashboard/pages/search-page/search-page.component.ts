@@ -29,7 +29,7 @@ export class SearchPageComponent implements OnInit {
 
   private searchRecipe(title: string) {
     this.recipeService.searchRecipes(title).subscribe({
-      next: ({ recipes }) => {
+      next: (recipes) => {
         this.recipes = recipes.map((recipe) => {
           return {
             id: recipe.id,
@@ -44,8 +44,6 @@ export class SearchPageComponent implements OnInit {
                 ?.some((fav) => fav.id === recipe.id) ?? false,
           };
         });
-
-        console.log(this.recipes);
       },
       error: (error) => console.error('Error:', error),
     });
