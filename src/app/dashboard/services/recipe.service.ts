@@ -92,11 +92,11 @@ export class RecipeService {
     );
   }
 
-  searchRecipes(title: string): Observable<RecipesResponse> {
+  searchRecipes(title: string): Observable<Recipe[]> {
     const url = `${this.baseUrl}/recipes/search`;
     const params = new HttpParams().set('title', title);
 
-    return this.http.get<RecipesResponse>(url, { params }).pipe(
+    return this.http.get<Recipe[]>(url, { params }).pipe(
       map((recipes) => recipes),
       catchError((err) => throwError(() => err.error.message))
     );
