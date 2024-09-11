@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   private destinationUrl: string = '';
 
   ngOnInit(): void {
+    this.authService.checkAuthStatus().subscribe();
     this.router.events.subscribe((event) => {
       //? Obtener la ruta a donde quiere navegar
       if (event instanceof NavigationStart) {
