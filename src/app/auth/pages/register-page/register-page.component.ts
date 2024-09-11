@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -14,6 +14,12 @@ import { ValidatorsService } from '../../../shared/services/validators.service';
 export class RegisterPageComponent {
   private router = inject(Router);
   public myForm: FormGroup;
+
+  public isLoading = signal<boolean | null>(false);
+  public finishedLoading = computed<boolean>(() => {
+    if (this.isLoading()) return true;
+    return false;
+  });
 
   constructor(
     private formBuilder: FormBuilder,
@@ -64,6 +70,8 @@ export class RegisterPageComponent {
   onSubmit() {
     this.myForm.markAllAsTouched();
 
+    this.isLoading.set(true);
+
     this.authService.register(this.myForm.value).subscribe({
       next: () => {
         Swal.fire(
@@ -72,10 +80,12 @@ export class RegisterPageComponent {
           'success'
         );
         this.router.navigateByUrl('/auth/login');
+        this.isLoading.set(false);
       },
       error: (message) => {
         console.log(message);
         Swal.fire('Error', message[0], 'error');
+        this.isLoading.set(false);
       },
     });
   }

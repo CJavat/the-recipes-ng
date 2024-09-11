@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Router } from '@angular/router';
 import { ImageUser, Routes } from '../../interfaces';
@@ -28,7 +28,29 @@ export class NavbarComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  toggleNavMenu(nameButton?: string): void {
+  // Este HostListener escucha clics en cualquier parte del documento
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const targetElement = event.target as HTMLElement;
+
+    // Si el clic no fue dentro del menú o del botón, cierra el menú
+    if (
+      targetElement.id !== 'user-menu-button' &&
+      !targetElement.closest('#user-menu')
+    ) {
+      this.isExpandedProfile = false;
+    }
+
+    if (
+      targetElement.id !== 'mobile-menu-button' &&
+      !targetElement.closest('#mobile-menu')
+    ) {
+      this.isExpanded = false;
+    }
+  }
+
+  toggleNavMenu(event: Event, nameButton?: string): void {
+    event.stopPropagation();
     if (nameButton === 'user-menu-button') {
       this.isExpandedProfile = !this.isExpandedProfile;
 
