@@ -7,15 +7,24 @@ import { DashboardService } from '../../services/dashboard.service';
   selector: 'dashboard-recipe-card',
   templateUrl: './recipe-card.component.html',
 })
-export class RecipeCardComponent {
-  public backendUrl: string = environment.backendUrl;
+export class RecipeCardComponent implements OnInit {
+  private backendUrl: string = environment.backendUrl;
 
   @Input({ required: true })
   public recipe?: CardRecipes;
 
-  constructor(private dashboardService: DashboardService) {
-    if (!this.recipe) return;
-    this.recipe!.image = `${this.backendUrl}/${this.recipe?.image}`;
+  public imageUrl: string = '';
+
+  constructor(private dashboardService: DashboardService) {}
+
+  ngOnInit(): void {
+    if (this.recipe?.image.includes('http')) {
+      this.imageUrl = this.recipe.image;
+      console.log(this.imageUrl);
+    } else {
+      console.log(this.imageUrl);
+      this.imageUrl = `${this.backendUrl}/${this.recipe?.image}`;
+    }
   }
 
   toggleSubmit() {

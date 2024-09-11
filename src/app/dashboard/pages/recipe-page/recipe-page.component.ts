@@ -46,8 +46,12 @@ export class RecipePageComponent implements OnInit {
     this.recipeService.getRecipeById(this.recipeId).subscribe({
       next: (recipes) => {
         this.recipe = recipes;
-        this.imageUrl = `${this.hostUrl}/${this.recipe.image}`;
         this.isMyRecipe = this.recipe?.User?.id === this.currentUser?.id;
+        if (this.recipe.image.includes('http')) {
+          this.imageUrl = `${this.recipe.image}`;
+        } else {
+          this.imageUrl = `${this.hostUrl}/${this.recipe.image}`;
+        }
       },
       error: (error) => console.error('Error:', error),
     });

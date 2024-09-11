@@ -9,12 +9,13 @@ import { User } from '../../../../auth/interfaces';
 @Component({
   selector: 'dashboard-my-account-page',
   templateUrl: './my-account-page.component.html',
-  styles: ``,
 })
 export class MyAccountPageComponent implements OnInit {
   private router = inject(Router);
+  private hostUrl = environment.backendUrl;
+
   public user?: User;
-  public hostUrl = environment.backendUrl;
+  public imageUrl: string = '';
 
   public finishedLoad = computed<boolean>(() => {
     console.log(this.authService.curretUser());
@@ -26,6 +27,11 @@ export class MyAccountPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.authService.curretUser() ?? undefined;
+    if (this.user?.avatar.includes('http')) {
+      this.imageUrl = this.user.avatar;
+    } else {
+      this.imageUrl = `${this.hostUrl}/${this.user?.avatar}`;
+    }
     if (!this.user) {
       this.router.navigateByUrl('/dashboard');
       return;

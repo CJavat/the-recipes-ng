@@ -14,9 +14,16 @@ export class DashboardLayoutComponent implements OnInit {
   constructor(private readonly authService: AuthService) {}
 
   ngOnInit(): void {
-    this.avatar = {
-      src: `${this.backendUrl}/${this.authService.curretUser()?.avatar}`,
-      alt: `${this.authService.curretUser()?.firstName}-image`,
-    };
+    if (this.authService.curretUser()?.avatar.includes('http')) {
+      this.avatar = {
+        src: `${this.authService.curretUser()?.avatar}`,
+        alt: `${this.authService.curretUser()?.firstName}-image`,
+      };
+    } else {
+      this.avatar = {
+        src: `${this.backendUrl}/${this.authService.curretUser()?.avatar}`,
+        alt: `${this.authService.curretUser()?.firstName}-image`,
+      };
+    }
   }
 }
