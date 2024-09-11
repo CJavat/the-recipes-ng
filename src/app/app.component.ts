@@ -43,15 +43,21 @@ export class AppComponent implements OnInit {
         return;
 
       case AuthStatus.authenticated:
-        console.log(this.destinationUrl);
-        console.log('Entró');
-        this.router.navigateByUrl(this.destinationUrl);
+        console.log(this.destinationUrl, ' - authenticated');
+        if (this.destinationUrl.includes('/auth')) {
+          this.router.navigateByUrl('/dashboard');
+        } else {
+          this.router.navigateByUrl(this.destinationUrl);
+        }
         break;
 
       case AuthStatus.notAuthenticated:
-        console.log(this.destinationUrl);
-        console.log('Entró');
-        this.router.navigateByUrl(this.destinationUrl);
+        console.log(this.destinationUrl, ' - notAuthenticated');
+        if (this.destinationUrl.includes('/dashboard')) {
+          this.router.navigateByUrl('/auth/login');
+        } else {
+          this.router.navigateByUrl(this.destinationUrl);
+        }
         break;
     }
   });
