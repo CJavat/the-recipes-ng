@@ -9,7 +9,6 @@ import { ValidatorsService } from '../../../shared/services/validators.service';
 @Component({
   selector: 'auth-forgot-password-page',
   templateUrl: './forgot-password-page.component.html',
-  styles: ``,
 })
 export class ForgotPasswordPageComponent {
   private router = inject(Router);

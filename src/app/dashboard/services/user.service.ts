@@ -12,6 +12,8 @@ export class UserService {
   private http = inject(HttpClient);
   private baseUrl: string = environment.baseUrl;
 
+  public isLoading = signal<boolean>(false);
+
   constructor() {}
 
   getUserProfile(id: string): Observable<FindUserResponse> {

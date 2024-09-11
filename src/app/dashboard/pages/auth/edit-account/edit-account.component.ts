@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -18,6 +18,11 @@ export class EditAccountComponent implements OnInit {
 
   public user?: User;
   public myForm: FormGroup;
+
+  public finishedLoading = computed<boolean>(() => {
+    if (this.userService.isLoading()) return true;
+    return false;
+  });
 
   constructor(
     private readonly authService: AuthService,
@@ -63,6 +68,7 @@ export class EditAccountComponent implements OnInit {
   onSubmit() {
     this.myForm.markAllAsTouched();
 
+    this.userService.isLoading.set(true);
     this.userService
       .updateUserProfile(this.authService.curretUser()!.id, this.myForm.value)
       .subscribe({
@@ -79,11 +85,13 @@ export class EditAccountComponent implements OnInit {
             'Tu cuenta se ha actualizado correctamente.',
             'success'
           );
+          this.userService.isLoading.set(false);
           this.router.navigateByUrl('/dashboard/auth/my-account');
         },
         error: (message) => {
           console.log(message);
           Swal.fire('Error', message[0], 'error');
+          this.userService.isLoading.set(false);
         },
       });
   }

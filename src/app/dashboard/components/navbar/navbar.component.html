@@ -8,9 +8,10 @@
         <button
           type="button"
           class="relative inline-flex items-center justify-center rounded-md p-2 text-black dark:text-white focus:outline-none focus:text-blue-950 dark:focus:text-sky-50 ring-1 focus:ring-sky-950 dark:focus:ring-sky-50"
-          aria-controls="mobile-menu"
+          aria-controls="mobile-menu-button"
+          id="recipe-menu"
           [attr.aria-expanded]="isExpanded"
-          (click)="toggleNavMenu()"
+          (click)="toggleNavMenu($event)"
         >
           <span class="absolute -inset-0.5"></span>
           <span class="sr-only">Open main menu</span>
@@ -49,7 +50,10 @@
       <div
         class="flex items-center justify-center sm:items-stretch sm:justify-start"
       >
-        <a routerLink="/dashboard" class="flex flex-shrink-0 items-center">
+        <a
+          routerLink="/dashboard"
+          class="flex flex-shrink-0 items-center mx-5 md:mx-0"
+        >
           <img
             class="h-8 w-auto rounded-md"
             src="/android-chrome-512x512.png"
@@ -84,31 +88,30 @@
 
         <!-- Profile dropdown -->
         <div class="relative">
-          <div>
-            <button
-              type="button"
-              class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-              id="user-menu-button"
-              aria-expanded="false"
-              aria-haspopup="isExpandedProfile"
-              (click)="toggleNavMenu('user-menu-button')"
-            >
-              <span class="absolute -inset-1.5"></span>
-              <span class="sr-only">Open user menu</span>
-              <img
-                class="h-8 w-8 rounded-full"
-                [src]="imageUser?.src"
-                [alt]="imageUser?.alt"
-              />
-            </button>
-          </div>
+          <button
+            type="button"
+            class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+            id="user-menu-button"
+            aria-expanded="false"
+            aria-haspopup="isExpandedProfile"
+            (click)="toggleNavMenu($event, 'user-menu-button')"
+          >
+            <span class="absolute -inset-1.5"></span>
+            <span class="sr-only">Open user menu</span>
+            <img
+              class="h-8 w-8 rounded-full"
+              [src]="imageUser?.src"
+              [alt]="imageUser?.alt"
+            />
+          </button>
 
           <div
-            class="bg-sky-50 dark:bg-sky-950 text-black dark:text-white absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition-all duration-500 ease-in-out"
+            class="bg-sky-50 dark:bg-sky-950 text-black dark:text-white absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition-all duration-500 ease-in-out"
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="user-menu-button"
             tabindex="-1"
+            id="user-menu"
             [ngClass]="{
               'opacity-0 max-h-0 overflow-hidden': !isExpandedProfile,
               'opacity-100 max-h-screen': isExpandedProfile,
@@ -116,7 +119,7 @@
           >
             @for (route of accountRoutes; track $index) {
             <a
-              (click)="toggleNavMenu('user-menu-button')"
+              (click)="toggleNavMenu($event, 'user-menu-button')"
               [routerLink]="route.routerLink"
               routerLinkActive="bg-sky-500 text-white"
               class="block px-4 py-2 text-sm hover:bg-sky-200 dark:hover:bg-sky-900"
@@ -156,7 +159,7 @@
       <a
         [routerLink]="route.routerLink"
         [routerLinkActiveOptions]="{ exact: true }"
-        (click)="toggleNavMenu()"
+        (click)="toggleNavMenu($event)"
         routerLinkActive="bg-sky-500 text-white"
         class="block rounded-md px-3 py-2 text-sm font-medium text-black dark:text-white hover:bg-sky-700 hover:text-white"
         aria-current="page"

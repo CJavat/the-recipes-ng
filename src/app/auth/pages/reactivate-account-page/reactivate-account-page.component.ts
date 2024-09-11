@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -12,6 +12,12 @@ import Swal from 'sweetalert2';
 export class ReactivateAccountPageComponent {
   private router = inject(Router);
   public myForm: FormGroup;
+
+  public isLoading = signal<boolean | null>(false);
+  public finishedLoading = computed<boolean>(() => {
+    if (this.isLoading()) return true;
+    return false;
+  });
 
   constructor(
     private authService: AuthService,
@@ -36,6 +42,8 @@ export class ReactivateAccountPageComponent {
   onSubmit() {
     this.myForm.markAllAsTouched();
 
+    this.isLoading.set(true);
+
     const { email } = this.myForm.value;
 
     this.authService.reactivateAccount(email).subscribe({
@@ -44,10 +52,14 @@ export class ReactivateAccountPageComponent {
           'Reactivación De Cuenta',
           'Tu cuenta se a reactivado correcamente',
           'success'
-        ).then(() => this.router.navigateByUrl('/auth/login')),
+        ).then(() => {
+          this.router.navigateByUrl('/auth/login');
+          this.isLoading.set(false);
+        }),
       error: (message) => {
         console.log(message);
         Swal.fire('Error', message[0], 'error');
+        this.isLoading.set(false);
       },
     });
   }

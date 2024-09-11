@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
@@ -28,6 +28,11 @@ export class CreateRecipeComponent implements OnInit {
 
   public selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
+
+  public finishedLoading = computed<boolean>(() => {
+    if (this.dashboardService.isLoading()) return true;
+    return false;
+  });
 
   constructor(
     private formBuilder: FormBuilder,
@@ -145,31 +150,41 @@ export class CreateRecipeComponent implements OnInit {
     }
 
     if (this.isEditing) {
+      this.dashboardService.isLoading.set(true);
       this.recipeService.updateRecipe(this.recipeId!, formData).subscribe({
         next: (recipe) => {
           Swal.fire(
             'Receta Actualizada',
             'La receta ha sido acutalizada correctamente',
             'success'
-          ).then(() => this.router.navigate(['/dashboard/recipe', recipe.id]));
+          ).then(() => {
+            this.router.navigate(['/dashboard/recipe', recipe.id]);
+            this.dashboardService.isLoading.set(false);
+          });
         },
         error: (error) => {
           Swal.fire('Error', error[0], 'error');
           console.error(error);
+          this.dashboardService.isLoading.set(false);
         },
       });
     } else {
+      this.dashboardService.isLoading.set(true);
       this.recipeService.createRecipe(formData).subscribe({
         next: (recipe) => {
           Swal.fire(
             'Receta Creada',
             'La receta ha sido creada correctamente',
             'success'
-          ).then(() => this.router.navigate(['/dashboard/recipe', recipe.id]));
+          ).then(() => {
+            this.router.navigate(['/dashboard/recipe', recipe.id]);
+            this.dashboardService.isLoading.set(false);
+          });
         },
         error: (error) => {
           Swal.fire('Error', error[0], 'error');
           console.error(error);
+          this.dashboardService.isLoading.set(false);
         },
       });
     }

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -14,6 +14,12 @@ import { AuthService } from '../../services/auth.service';
 export class LoginPageComponent {
   private router = inject(Router);
   public myForm: FormGroup;
+
+  public isLoading = signal<boolean | null>(false);
+  public finishedLoading = computed<boolean>(() => {
+    if (this.isLoading()) return true;
+    return false;
+  });
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,13 +45,18 @@ export class LoginPageComponent {
   onSubmit() {
     this.myForm.markAllAsTouched();
 
+    this.isLoading.set(true);
     const { email, password } = this.myForm.value;
 
     this.authService.login(email, password).subscribe({
-      next: () => this.router.navigateByUrl('/dashboard'),
+      next: () => {
+        this.router.navigateByUrl('/dashboard');
+        this.isLoading.set(false);
+      },
       error: (message) => {
         console.log(message);
         Swal.fire('Error', message[0], 'error');
+        this.isLoading.set(false);
       },
     });
   }

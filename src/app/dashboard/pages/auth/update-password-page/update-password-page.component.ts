@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -18,6 +18,11 @@ export class UpdatePasswordPageComponent implements OnInit {
 
   public user?: User;
   public myForm: FormGroup;
+
+  public finishedLoading = computed<boolean>(() => {
+    if (this.userService.isLoading()) return true;
+    return false;
+  });
 
   constructor(
     private readonly authService: AuthService,
@@ -56,6 +61,7 @@ export class UpdatePasswordPageComponent implements OnInit {
 
   onSubmit() {
     this.myForm.markAllAsTouched();
+    this.userService.isLoading.set(true);
     this.userService
       .updateUserProfile(this.authService.curretUser()!.id, {
         password: this.myForm.value['password'],
@@ -74,11 +80,13 @@ export class UpdatePasswordPageComponent implements OnInit {
             'Tu contraseña se ha actualizado correctamente.',
             'success'
           );
+          this.userService.isLoading.set(false);
           this.router.navigateByUrl('/dashboard/auth/settings');
         },
         error: (message) => {
           console.log(message);
           Swal.fire('Error', message[0], 'error');
+          this.userService.isLoading.set(false);
         },
       });
   }
