@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../../auth/services/auth.service';
@@ -24,6 +24,11 @@ export class RecipePageComponent implements OnInit {
   public isFavorite: boolean = false;
   public isMyRecipe: boolean = false;
 
+  public finishedLoad = computed<boolean>(() => {
+    if (this.dashboardService.isLoading()) return true;
+    return false;
+  });
+
   constructor(
     private dashboardService: DashboardService,
     private authService: AuthService,
@@ -43,6 +48,7 @@ export class RecipePageComponent implements OnInit {
   }
 
   getRecipe() {
+    this.dashboardService.isLoading.set(true);
     this.recipeService.getRecipeById(this.recipeId).subscribe({
       next: (recipes) => {
         this.recipe = recipes;
@@ -52,8 +58,13 @@ export class RecipePageComponent implements OnInit {
         } else {
           this.imageUrl = `${this.hostUrl}/${this.recipe.image}`;
         }
+
+        this.dashboardService.isLoading.set(false);
       },
-      error: (error) => console.error('Error:', error),
+      error: (error) => {
+        console.error('Error:', error);
+        this.dashboardService.isLoading.set(false);
+      },
     });
   }
 

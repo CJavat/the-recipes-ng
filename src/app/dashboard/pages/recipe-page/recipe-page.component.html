@@ -1,11 +1,12 @@
 <div
   class="grid grid-cols-1 md:grid-cols-12 gap-2 text-sky-950 dark:text-sky-50"
 >
+  @if (!finishedLoad()) {
   <div
     class="col-span-12 md:col-span-6 flex flex-col justify-center items-center my-5 md:my-0"
   >
     <div class="relative">
-      <button class="absolute right-0 z-50" (click)="toggleSubmit()">
+      <button class="absolute right-0 z-10" (click)="toggleSubmit()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -30,18 +31,18 @@
       />
     </div>
 
-    <div class="text-start">
+    <div class="w-full md:w-fit text-start sm:text-center md:text-start">
       <a
         [routerLink]="['/dashboard/category', recipe?.Category?.id]"
-        class="text-sky-500 hover:text-sky-600"
+        class="text-sky-500 hover:text-sky-600 text-md"
         >{{ recipe?.Category?.name }}</a
       >
-      <p>
+      <p class="text-md">
         Creado el
         {{ recipe?.createdAt | date : "fullDate" : "" : "es-MX" | titlecase }}
       </p>
 
-      <p>
+      <p class="text-sm">
         Autor:
         <a
           [routerLink]="['/dashboard/recipes-by-user', recipe?.User?.id]"
@@ -97,4 +98,9 @@
       </ul>
     </div>
   </div>
+  }@else {
+  <div class="self-center w-full flex justify-center items-center">
+    <shared-spinner />
+  </div>
+  }
 </div>

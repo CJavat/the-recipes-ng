@@ -1,5 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 
 import { environment } from '../../../../../environments/environment';
@@ -13,10 +12,13 @@ import { UserService } from '../../../services/user.service';
   styles: ``,
 })
 export class UpdateImagePageComponent implements OnInit {
-  private router = inject(Router);
-
   public hostUrl: string = environment.backendUrl;
   public imageProfile: string = '';
+
+  public finishedLoad = computed<boolean>(() => {
+    if (this.userService.isLoading()) return true;
+    return false;
+  });
 
   constructor(
     private authService: AuthService,
@@ -42,6 +44,7 @@ export class UpdateImagePageComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', file);
 
+    this.userService.isLoading.set(true);
     this.userService.updatePhoto(formData).subscribe({
       next: (response) => {
         this.authService.setAuthentication(response);
@@ -51,10 +54,14 @@ export class UpdateImagePageComponent implements OnInit {
           'Imagen Actualizada',
           'La imagen de perfil ha sido actualizada correctamente',
           'success'
-        ).then(() => location.reload());
+        ).then(() => {
+          this.userService.isLoading.set(false);
+          location.reload();
+        });
       },
       error: (error) => {
         console.log(error);
+        this.userService.isLoading.set(false);
         Swal.fire('Error', 'No se pudo actualizar tu imagen', 'error');
       },
     });

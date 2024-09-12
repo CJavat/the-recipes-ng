@@ -39,7 +39,7 @@
                     *ngIf="imagePreview"
                     [src]="imagePreview"
                     alt="Vista previa de la imagen"
-                    class="h-16 w-16 md:h-56 md:w-56 rounded-full"
+                    class="h-36 w-36 md:h-56 md:w-56 rounded-full"
                   />
                   <span
                     class="absolute inset-0 flex items-center justify-center text-white font-semibold bg-black bg-opacity-50 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300"
@@ -50,7 +50,7 @@
                   <img
                     [src]="imagePreview ? imagePreview : imageUrl"
                     [alt]="myForm.controls['title'].value"
-                    class="h-36 w-2h-36 md:h-56 md:w-56 rounded-full"
+                    class="h-36 w-36 md:h-56 md:w-56 rounded-full"
                   />
                   <span
                     class="absolute inset-0 flex items-center justify-center text-white font-semibold bg-black bg-opacity-50 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300"
@@ -181,11 +181,11 @@
           <button
             [disabled]="finishedLoading()"
             type="submit"
-            class="uppercase sflex w-full justify-center rounded-md bg-sky-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            class="flex w-full justify-center rounded-md bg-sky-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             @if (finishedLoading()) {
             <shared-spinner class="w-6" />
-            }@else { @if (!isEditing) { Crear Receta }@else { ACtualizar Receta
+            }@else { @if (!isEditing) { Crear Receta }@else { Actualizar Receta
             } }
           </button>
         </div>

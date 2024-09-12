@@ -20,9 +20,7 @@ export class RecipeCardComponent implements OnInit {
   ngOnInit(): void {
     if (this.recipe?.image.includes('http')) {
       this.imageUrl = this.recipe.image;
-      console.log(this.imageUrl);
     } else {
-      console.log(this.imageUrl);
       this.imageUrl = `${this.backendUrl}/${this.recipe?.image}`;
     }
   }
