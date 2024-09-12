@@ -1,4 +1,4 @@
 export const environment = {
-  baseUrl: 'http://localhost:3000/api',
-  backendUrl: 'http://localhost:3000',
+  baseUrl: 'https://the-recipes-nest.onrender.com/api',
+  backendUrl: 'https://the-recipes-nest.onrender.com/',
 };
