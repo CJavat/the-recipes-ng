@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
@@ -10,12 +10,16 @@ import { DashboardService } from '../../services/dashboard.service';
 import { environment } from '../../../../environments/environment';
 
 import { CategoriesResponse } from '../../interfaces';
+import { MyImageCropperComponent } from '../../components/image-cropper/my-image-cropper.component';
 
 @Component({
   selector: 'app-create-recipe',
   templateUrl: './create-recipe.component.html',
 })
 export class CreateRecipeComponent implements OnInit {
+  @ViewChild(MyImageCropperComponent)
+  imageCropperComponent!: MyImageCropperComponent;
+
   private router = inject(Router);
   private hostUrl = environment.backendUrl;
 
@@ -118,10 +122,8 @@ export class CreateRecipeComponent implements OnInit {
     return this.validatorsService.isValidField(this.myForm, field);
   }
 
-  onFileChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
+  onFileChange(file: File) {
+    if (file) {
       this.selectedFile = file;
 
       const reader = new FileReader();
@@ -192,5 +194,9 @@ export class CreateRecipeComponent implements OnInit {
         },
       });
     }
+  }
+
+  openFileInputInChild() {
+    this.imageCropperComponent.openFileDialog();
   }
 }

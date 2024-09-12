@@ -9,16 +9,15 @@
     >
       @if(!finishedLoad()) {
       <div class="px-4 py-6 sm:px-0">
-        <input
-          #myInputFile
-          type="file"
-          class="hidden"
-          (change)="onFileSelected($event)"
+        <dashboard-image-cropper
+          class="w-96"
+          (fileSelected)="updatePhoto($event)"
         />
 
         <button
           [disabled]="finishedLoad()"
-          (click)="myInputFile.click()"
+          (click)="openFileInputInChild()"
+          type="button"
           class="h-36 w-36 md:h-56 md:w-56 inline-block relative rounded-full border border-sky-500"
         >
           <img

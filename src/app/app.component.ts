@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
         return;
 
       case AuthStatus.authenticated:
-        if (this.destinationUrl.includes('/auth')) {
+        if (this.destinationUrl.startsWith('/auth')) {
           this.router.navigateByUrl('/dashboard');
         } else {
           this.router.navigateByUrl(this.destinationUrl);
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
         break;
 
       case AuthStatus.notAuthenticated:
-        if (this.destinationUrl.includes('/dashboard')) {
+        if (this.destinationUrl.startsWith('/dashboard')) {
           this.router.navigateByUrl('/auth/login');
         } else {
           this.router.navigateByUrl(this.destinationUrl);

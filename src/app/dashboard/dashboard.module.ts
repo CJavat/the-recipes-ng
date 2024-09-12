@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ImageCropperComponent } from 'ngx-image-cropper';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
@@ -29,6 +30,7 @@ import { DeleteAccountComponent } from './pages/auth/delete-account/delete-accou
 import { RecipesByUserComponent } from './pages/recipes-by-user/recipes-by-user.component';
 import { MyRecipesComponent } from './pages/my-recipes/my-recipes.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { MyImageCropperComponent } from './components/image-cropper/my-image-cropper.component';
 
 @NgModule({
   declarations: [
@@ -55,12 +57,14 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     RecipesByUserComponent,
     MyRecipesComponent,
     PaginationComponent,
+    MyImageCropperComponent,
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     DashboardRoutingModule,
     SharedModule,
+    ImageCropperComponent,
   ],
 })
 export class DashboardModule {}

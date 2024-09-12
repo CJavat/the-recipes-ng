@@ -1,17 +1,20 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, OnInit, ViewChild } from '@angular/core';
 import Swal from 'sweetalert2';
 
 import { environment } from '../../../../../environments/environment';
 
 import { AuthService } from '../../../../auth/services/auth.service';
 import { UserService } from '../../../services/user.service';
+import { MyImageCropperComponent } from '../../../components/image-cropper/my-image-cropper.component';
 
 @Component({
   selector: 'app-update-image-page',
   templateUrl: './update-image-page.component.html',
-  styles: ``,
 })
 export class UpdateImagePageComponent implements OnInit {
+  @ViewChild(MyImageCropperComponent)
+  imageCropperComponent!: MyImageCropperComponent;
+
   public hostUrl: string = environment.backendUrl;
   public imageProfile: string = '';
 
@@ -35,12 +38,7 @@ export class UpdateImagePageComponent implements OnInit {
     }
   }
 
-  onFileSelected(event: Event): void {
-    const fileInput = event.target as HTMLInputElement;
-    if (!(fileInput.files && fileInput.files.length > 0)) return;
-
-    const file = fileInput.files[0];
-
+  updatePhoto(file: File) {
     const formData = new FormData();
     formData.append('file', file);
 
@@ -65,5 +63,9 @@ export class UpdateImagePageComponent implements OnInit {
         Swal.fire('Error', 'No se pudo actualizar tu imagen', 'error');
       },
     });
+  }
+
+  openFileInputInChild() {
+    this.imageCropperComponent.openFileDialog();
   }
 }
