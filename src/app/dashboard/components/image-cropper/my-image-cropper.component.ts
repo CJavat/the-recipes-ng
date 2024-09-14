@@ -22,6 +22,8 @@ export class MyImageCropperComponent implements OnInit {
   @Input()
   public class: string = '';
 
+  private mainContainer = document.getElementById('main-container');
+
   public imageChangedEvent: Event | null = null;
   public croppedImage?: Blob;
   public finalCroppedImage?: Blob;
@@ -34,6 +36,9 @@ export class MyImageCropperComponent implements OnInit {
   ngOnInit(): void {}
 
   fileChangeEvent(event: Event): void {
+    this.mainContainer?.classList.add('overflow-hidden');
+    this.mainContainer?.classList.add('max-h-screen');
+
     this.imageChangedEvent = event;
     this.isCropped = false;
     this.showImageCropper = true;
@@ -64,6 +69,9 @@ export class MyImageCropperComponent implements OnInit {
     this.isCropped = true;
     this.showImageCropper = false;
 
+    this.mainContainer?.classList.remove('overflow-hidden');
+    this.mainContainer?.classList.remove('max-h-screen');
+
     this.blobConvertedToFile = new File(
       [this.finalCroppedImage!],
       'cropped-image.jpg',
@@ -80,6 +88,9 @@ export class MyImageCropperComponent implements OnInit {
     this.showImageCropper = false;
     this.finalCroppedImage = undefined;
     this.croppedImage = undefined;
+
+    this.mainContainer?.classList.remove('overflow-hidden');
+    this.mainContainer?.classList.remove('max-h-screen');
   }
 
   openFileDialog() {

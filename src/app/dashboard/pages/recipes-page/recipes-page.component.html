@@ -1,7 +1,7 @@
 @if(!finishedLoad()){
 <dashboard-add-recipe-button class="pt-5 block mx-auto w-fit" />
 
-<div class="flex-1 px-5">
+<div class="px-5">
   <h3 class="text-2xl text-black dark:text-white mb-3">Recetas</h3>
 
   @if(recipes && recipes!.length > 0) {
@@ -28,7 +28,9 @@
   *ngIf="recipes!.length > 0"
 />
 }@else{
-<div class="self-center w-full flex justify-center items-center">
+
+<div class="h-96 flex justify-center items-center">
   <shared-spinner />
 </div>
+
 }
