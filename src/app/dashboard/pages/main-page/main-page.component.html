@@ -1,4 +1,4 @@
-<div class="min-h-screen pt-5 flex flex-col">
+<div class="pt-5 flex flex-col">
   @if (!finishedLoad()) {
 
   <div class="px-5 hidden md:block">
@@ -47,7 +47,7 @@
     *ngIf="recipes!.length > 0"
   />
   }@else {
-  <div class="self-center w-full flex justify-center items-center">
+  <div class="h-96 flex justify-center items-center">
     <shared-spinner />
   </div>
   }

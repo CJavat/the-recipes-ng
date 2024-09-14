@@ -5,4 +5,6 @@
   <img src="../assets/spinner.svg" alt="loading..." class="w-32" />
 </div>
 
-<router-outlet *ngIf="finishedAuthCheck()" />
+<div id="main-container">
+  <router-outlet *ngIf="finishedAuthCheck()" />
+</div>

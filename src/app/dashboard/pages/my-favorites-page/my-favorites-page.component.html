@@ -1,4 +1,4 @@
-<div class="flex-1 min-h-screen">
+<div class="">
   @if(!finishedLoad()){
 
   <h3 class="text-2xl text-black dark:text-white mb-3">Recetas Favoritas</h3>
@@ -12,12 +12,12 @@
   </div>
   } @else {
   <p
-    class="border border-red-500 text-red-500 rounded-md text-center p-2 max-w-5xl mx-auto my-16"
+    class="border border-red-500 text-red-500 rounded-md text-center p-2 w-fit mx-auto my-16"
   >
     No hay recetas para mostrar
   </p>
   } }@else{
-  <div class="self-center w-full flex justify-center items-center">
+  <div class="h-96 flex justify-center items-center">
     <shared-spinner />
   </div>
   }
